@@ -1,0 +1,215 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+ */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+html {
+	/* PALLETE */
+	--bg-color: #fffdce;
+	--side-color: #fffdce;
+	--header-color: #4A4511;
+	--footer-color: #4a3d11;
+}
+
+
+.text-input {
+  width: 400px;
+}
+
+/* CSS GRID */
+/* CSS GRID START */
+
+.logo {
+	grid-area: logo;
+	background-color: var(--header-color);
+  }
+
+  .logo a {
+    color: var(--bg-color);
+}
+
+  .login {
+	grid-area: login;
+	background-color: var(--header-color);
+	color: var(--bg-color);
+  }
+
+  .login a {
+	color: var(--bg-color);
+  }
+
+  .content {
+  grid-area: content;
+
+
+  }
+  .side {
+  grid-area: sidebar;
+  background-color: var(--side-color);
+  }
+  .side2 {
+  grid-area: sidebar2;
+  background-color: var(--side-color);
+  }
+  .main-footer {
+  grid-area: footer;
+  background-color: var(--footer-color);
+  color: var(--bg-color);
+  text-align: center;
+  }
+
+  .main-footer a {
+	color: var(--bg-color);
+  }
+
+  .wrapper {
+display: grid;
+gap: 0px;
+grid-template-areas:
+  "logo"
+  "login"
+  "content"
+  "sidebar"
+  "sidebar2"
+  "footer";
+}
+
+/* END CSS GRID */
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  /*
+  display: flex;
+  place-items: center;
+  */
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 2.0em;
+  /* line-height: 1.1; */
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  color: #ffffff;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+}
+
+@media (min-width: 550px) {
+  .wrapper {
+    grid-template-columns: 1fr 4fr;
+    grid-template-areas:
+    "logo  login"
+    "sidebar content"
+    "sidebar2 content"
+    "footer footer";
+    min-height:100vh; 
+  }
+  
+  .login {
+    text-align: right;
+    }
+  }
+
+  @media (min-width: 700px) {
+    .wrapper {
+      grid-template-columns: 1fr 4fr 1fr;
+      grid-template-areas:
+      "logo login login"
+      "sidebar content sidebar2"
+      "footer footer footer";
+      grid-template-rows: auto 1fr auto; 
+      min-height:100vh; 
+    }
+    
+    
+    }
+    
+    /* CSS GRID END */
+
+/* DATA TABLE */
+  .data_table{
+    /* width:100%; */
+    border-collapse:collapse;
+    /* background-color: #ffffff; */
+  }
+  .data_table td, .data_table th
+  {
+    font-size:12px;
+    border:1px solid #000;
+    padding:4px 7px 4px 7px;
+    background-color: #ffffff; 
+  }
+  .data_table th
+  {
+    text-align:left;
+    background-color:#585858;
+    color:#fff;
+    /* width: 80px; */
+    padding:2px 7px 1px 7px;		
+    /* white-space:nowrap; */
+  }
+   
+/* DATA TABLES END */
+
+
+/* ag-grid 
+
+.ag-theme-alpine {
+    --ag-header-color: black;
+    --ag-header-height: 30px;
+    --ag-header-foreground-color: white;
+    --ag-header-background-color: white;
+    --ag-header-cell-hover-background-color: rgb(80, 40, 140);
+    --ag-header-cell-moving-background-color: rgb(80, 40, 140);
+}
+*/ 
+

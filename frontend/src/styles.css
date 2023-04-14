@@ -1,0 +1,156 @@
+:root {
+  --header-height: 60px;
+  --footer-height: 60px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Open Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--surface-0);
+  color: var(--text-color);
+}
+
+.group-card {
+  box-shadow: none;
+}
+
+#root {
+  height: 100%;
+}
+
+.logo {
+  height: 44px;
+  width: 44px;
+}
+.yellow1 {
+  background-color: var(--yellow-200);
+}
+
+.yellow2 {
+  background-color: var(--yellow-300);
+}
+
+.yellow3 {
+  background-color: var(--yellow-300);
+}
+
+/* NAVBAR */
+
+.navbar {
+  grid-area: header;
+  background-color: var(--blue-200);
+  display: flex;
+  /*justify-content: space-between; */
+  align-items: center;
+  padding: 4px 5px 3px 5px;
+}
+
+.title {
+  color: var(--blue-800);
+  display: inline-block;
+}
+
+.navbar-links {
+  padding-left: 30px;
+}
+
+.navbar-links ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li {
+  list-style: none;
+}
+
+.navbar-links li a:hover {
+  background-color: var(--blue-100);
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+.navbar-links li a {
+  text-decoration: none;
+  display: block;
+  color: var(--blue-800);
+  padding: 1rem;
+}
+
+.toggle-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 23px;
+  width: 23px;
+}
+
+.toggle-button .bar {
+  height: 3px;
+  width: 100%;
+  background-color: var(--blue-900);
+  border-radius: 10px;
+}
+
+@media (max-width: 800px) {
+  .toggle-button {
+    display: flex;
+  }
+
+  .navbar-links {
+    display: none;
+    width: 100%;
+    padding-left: 0px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-links ul {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-links li {
+    text-align: center;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+}
+
+/* END NAVBAR */
+
+.content {
+  min-height: calc(100vh - (var(--footer-height) + var(--header-height)));
+  grid-area: content;
+}
+.footer {
+  grid-area: footer;
+  background-color: var(--blue-200);
+  text-align: center;
+  height: 60px;
+}
+
+.footer a {
+  color: var(--blue-800);
+}
+
+#root {
+  display: grid;
+  gap: 0px;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer";
+}
