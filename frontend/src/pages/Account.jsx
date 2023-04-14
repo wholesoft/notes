@@ -5,7 +5,7 @@ import { tabTitle } from "../utils/helperFunctions"
 const Account = () => {
   return (
     <>
-      {tabTitle("Account - Wholesoft Stuff")}
+      {tabTitle("Account - Wholesoft Notes")}
       <div className="flex flex-wrap">
         <UpdateEmailForm />
         <UpdatePassword />

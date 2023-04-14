@@ -22,7 +22,7 @@ const ConfirmEmail = () => {
 
   return success ? (
     <>
-      {tabTitle("Confirm Email - Wholesoft Stuff")}
+      {tabTitle("Confirm Email - Wholesoft Notes")}
       <p>
         Thank you for confirming your email address. Please{" "}
         <Link to="/login">login</Link>.

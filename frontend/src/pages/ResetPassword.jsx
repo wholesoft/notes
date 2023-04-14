@@ -10,7 +10,7 @@ const ResetPassword = () => {
 
   return (
     <>
-      {tabTitle("Reset Password - Wholesoft Stuff")}
+      {tabTitle("Reset Password - Wholesoft Notes")}
       <h1>Create a new password.</h1>
       <br />
       <UpdatePassword token={password_reset_token} />

@@ -87,7 +87,7 @@ const Login = () => {
 
   return (
     <>
-      {tabTitle("Login - Wholesoft Stuff")}
+      {tabTitle("Login - Wholesoft Notes")}
       <Card title="Sign In" className="col-12 md:col-6">
         <form onSubmit={handleSubmit}>
           <div className="p-fluid">

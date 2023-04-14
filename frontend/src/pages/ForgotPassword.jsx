@@ -4,7 +4,7 @@ import { tabTitle } from "../utils/helperFunctions"
 const ForgotPassword = () => {
   return (
     <>
-      {tabTitle("Forgot Password - Wholesoft Stuff")}
+      {tabTitle("Forgot Password - Wholesoft Notes")}
       <ForgotPasswordForm />
     </>
   )

@@ -12,7 +12,7 @@ const Logout = () => {
     navigate("/about")
   }, [])
 
-  return <>{tabTitle("Logout - Wholesoft Stuff")}</>
+  return <>{tabTitle("Logout - Wholesoft Notes")}</>
 }
 
 export { Logout }

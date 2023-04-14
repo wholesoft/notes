@@ -23,7 +23,7 @@ const UploadImage = () => {
 
   return (
     <>
-      {tabTitle("Upload Image - Wholesoft Stuff")}
+      {tabTitle("Upload Image - Wholesoft Notes")}
       <p>{imageName}</p>
       <p>{description}</p>
       <form onSubmit={submit}>

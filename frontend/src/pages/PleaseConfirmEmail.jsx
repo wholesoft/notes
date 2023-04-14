@@ -54,7 +54,7 @@ const PleaseConfirmEmail = () => {
 
   return (
     <>
-      {tabTitle("Please Confirm Email - Wholesoft Stuff")}
+      {tabTitle("Please Confirm Email - Wholesoft Notes")}
       <p>{message}</p>
       <p>Please check your email and confirm your email before logging in.</p>
       <p>

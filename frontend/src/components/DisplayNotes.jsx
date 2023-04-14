@@ -51,7 +51,7 @@ const DisplayNotes = () => {
 
   if (notesQuery.isLoading) return <h1>Loading...</h1>
   if (notesQuery.isError) {
-    return <pre>{JSON.stringify(noetsQuery.error)}</pre>
+    return <pre>{JSON.stringify(notesQuery.error)}</pre>
   }
   const data = notesQuery.data
   //console.log(data)

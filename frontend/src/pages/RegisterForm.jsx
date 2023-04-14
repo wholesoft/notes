@@ -69,7 +69,7 @@ const RegisterForm = () => {
 
   return (
     <>
-      {tabTitle("Register - Wholesoft Stuff")}
+      {tabTitle("Register - Wholesoft Notes")}
       <Card title="Register" className="mr-4 mb-4 col-12 md:col-6">
         <form onSubmit={handleSubmit}>
           <div className="p-fluid">

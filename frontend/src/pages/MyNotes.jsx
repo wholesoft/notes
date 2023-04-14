@@ -5,7 +5,7 @@ import { DisplayNotes } from "../components/DisplayNotes"
 const MyNotes = () => {
   return (
     <>
-      {tabTitle("My Notes - Wholesoft Stuff")}
+      {tabTitle("My Notes - Wholesoft Notes")}
       <p className="text-sm">
         <Link to="/add_note">Add Note</Link>
       </p>
