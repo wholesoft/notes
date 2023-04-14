@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
-import { getNotes, deleteNote, addNote, editNote } from "./apiNotes"
+import { getNote, getNotes, deleteNote, addNote, editNote } from "./apiNotes"
 
 /* GROUPS */
 
@@ -58,12 +58,12 @@ const useAddNote = (toastRef) => {
   const addMutation = useMutation({
     mutationFn: (data) => addNote(data),
     onMutate: async (props) => {
-      console.log("on mutate")
-      console.log(props)
+      //console.log("on mutate")
+      //console.log(props)
     },
     onSuccess: (props) => {
-      console.log("mutate success")
-      console.log(props)
+      //console.log("mutate success")
+      //console.log(props)
       toastRef.current.show({
         severity: "info",
         summary: "Saved",
@@ -89,8 +89,8 @@ const useEditNote = (toastRef) => {
       console.log("on mutate note")
     },
     onSuccess: (props) => {
-      console.log("mutate success")
-      console.log(props)
+      //console.log("mutate success")
+      //console.log(props)
       toastRef.current.show({
         severity: "info",
         summary: "Saved",

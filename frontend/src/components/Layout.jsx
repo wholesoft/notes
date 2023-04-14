@@ -10,7 +10,7 @@ const Layout = () => {
 
   useEffect(() => {
     // Close Nav Menu after route change
-    console.log(location.pathname + " : " + prevLoc)
+    //console.log(location.pathname + " : " + prevLoc)
     if (activeNav && location.pathname != prevLoc) {
       setActiveNav(false)
     }

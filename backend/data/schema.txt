@@ -1,0 +1,10 @@
+CREATE TABLE `Notes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `title` VARCHAR(255),
+  `description` VARCHAR(255), 
+  `note` text,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)

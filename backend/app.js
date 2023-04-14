@@ -4,6 +4,8 @@ import multer from "multer"
 import fs from "fs"
 import UserAgent from "user-agents"
 
+import { getNote, getNotes, addNote, updateNote, deleteNote } from "./notes.js"
+
 import {
   create_user,
   confirm_email,
@@ -270,7 +272,7 @@ app.post("/update_password", async (req, res) => {
 })
 
 /* NOTES API */
-app.post("add_note", async (req, res) => {
+app.post("/add_note", async (req, res) => {
   console.log("POST: add_note")
   const { note } = req.body
   const user_id = req.jwt_user_id
@@ -278,19 +280,11 @@ app.post("add_note", async (req, res) => {
   res.send(result)
 })
 
-app.post("edit_note", async (req, res) => {
+app.post("/edit_note", async (req, res) => {
   console.log("POST: edit_note")
-  const { note } = req.body
+  const { note_id, note } = req.body
   const user_id = req.jwt_user_id
-  const result = await updateNote({ user_id, note })
-  res.send(result)
-})
-
-app.post("edit_note", async (req, res) => {
-  console.log("POST: edit_note")
-  const { note } = req.body
-  const user_id = req.jwt_user_id
-  const result = await updateNote({ user_id, note })
+  const result = await updateNote({ user_id, note_id, note })
   res.send(result)
 })
 
@@ -304,16 +298,16 @@ app.post("/delete_note", async (req, res) => {
 
 app.get("/notes/:note_id", async (req, res) => {
   console.log("GET: /notes:note_id")
-  const note_id = req.params.note
+  const note_id = req.params.note_id
   const user_id = req.jwt_user_id
   const result = await getNote({ user_id, note_id })
   res.send(result)
 })
 
-app.get("/notess", async (req, res) => {
+app.get("/notes", async (req, res) => {
   console.log("GET: /notes")
   const user_id = req.jwt_user_id
-  const result = await getNotes({ user_id, note_id })
+  const result = await getNotes({ user_id })
   res.send(result)
 })
 

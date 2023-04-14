@@ -17,7 +17,7 @@ import { Unauthorized } from "./pages/Unauthorized"
 import { About } from "./pages/About"
 import { Logout } from "./pages/Logout"
 import { MyNotes } from "./pages/MyNotes"
-import { AddNote } from "./pages/AddNote"
+import { AddEditNote } from "./pages/AddEditNote"
 
 const ROLES = {
   User: 1001,
@@ -49,7 +49,8 @@ function App() {
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
               <Route path="/mynotes" element={<MyNotes />} />
-              <Route path="/add_note" element={<AddNote />} />
+              <Route path="/add_note" element={<AddEditNote />} />
+              <Route path="/edit_note/:noteId" element={<AddEditNote />} />
               <Route path="/account" element={<Account />} />
             </Route>
 

@@ -17,22 +17,21 @@ const AddEditNoteForm = (props) => {
 
   let id = 0
 
-  let notes = ""
+  let note = ""
 
-  //console.log(props.data)
+  //console.log(props)
   if (props.data != undefined) {
     id = props.data.id
-    if (props.data.notes != null) {
-      notes = props.data.notes
-    }
+    note = props.data.note
   }
+
   let cardTitle = "Add Note"
   if (id > 0) {
     cardTitle = "Edit Note"
   }
 
   const [form, setForm] = useState({
-    notes: notes,
+    note: note,
   })
 
   const handleChange = (event) => {
@@ -44,16 +43,17 @@ const AddEditNoteForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    e.stopPropagation()
     let response = ""
-    const { notes } = form
+    const { note } = form
     if (id > 0) {
       if (deleteCheck) {
         deleteMutation.mutate(id)
       } else {
-        editMutation.mutate({ id: id, notes })
+        editMutation.mutate({ note_id: id, note })
       }
     } else {
-      addMutation.mutate({ notes })
+      addMutation.mutate({ note })
     }
     //setForm({ group: "", notes: "" })
   }
@@ -63,15 +63,15 @@ const AddEditNoteForm = (props) => {
       <Card title={cardTitle} className="col-12 md:col-6">
         <form onSubmit={handleSubmit}>
           <div className="p-fluid">
-            <span className="p-float-label mt-4">
+            <span className="p-float-label mt-0">
               <InputTextarea
-                id="notes"
-                value={form.notes}
+                id="note"
+                value={form.note}
                 onChange={(e) => handleChange(e)}
                 rows={5}
                 cols={30}
               />
-              <label htmlFor="notes">Notes</label>
+              <label htmlFor="notes">Note</label>
             </span>
           </div>
 
