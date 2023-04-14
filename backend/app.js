@@ -277,8 +277,6 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-console.log("backend init")
-
 function truncate(str, length) {
   if (str.length > length) {
     return str.slice(0, length) + "..."

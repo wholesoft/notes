@@ -17,6 +17,7 @@ import { Unauthorized } from "./pages/Unauthorized"
 import { About } from "./pages/About"
 import { Logout } from "./pages/Logout"
 import { MyNotes } from "./pages/MyNotes"
+import { AddNote } from "./pages/AddNote"
 
 const ROLES = {
   User: 1001,
@@ -42,11 +43,13 @@ function App() {
           <Route path="/confirm/:token" element={<ConfirmEmail />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/" element={<About />} />
+          <Route path="/about" element={<About />} />
 
           {/* we want to protect these routes */}
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-              <Route path="/mysnotes" element={<MyNotes />} />
+              <Route path="/mynotes" element={<MyNotes />} />
+              <Route path="/add_note" element={<AddNote />} />
               <Route path="/account" element={<Account />} />
             </Route>
 

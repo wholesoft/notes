@@ -25,8 +25,7 @@ const NavMenu = () => {
   // LOGGED IN USER
   if (auth?.roles?.includes(1001)) {
     items = [
-      { id: 4, link: "/mysnotes", label: "My Notes" },
-      { id: 8, link: "/about", label: "About" },
+      { id: 4, link: "/mynotes", label: "My Notes" },
       { id: 5, link: "/account", label: "My Account" },
       { id: 6, link: "/logout", label: "Logout" },
     ]
