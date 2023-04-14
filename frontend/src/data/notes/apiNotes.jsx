@@ -14,8 +14,10 @@ const getNote = async (note_id) => {
 }
 
 const deleteNote = async (note_id) => {
-  const url = `/delete_note/${note_id}`
-  const response = await axiosAuth.get(url)
+  const url = `/delete_note`
+  data = JSON.stringify(note_id)
+  console.log(data)
+  const response = await axiosAuth.post(url)
   console.log(response.data)
   return response.data
 }

@@ -1,0 +1,5 @@
+addNote({ user_id, note })
+updateNote({ user_id, note })
+deleteNote({ user_id, note_id })
+getNote({ user_id, note_id })
+getNotes({ user_id, note_id })

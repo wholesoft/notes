@@ -192,28 +192,28 @@ app.get("/delete_user/:user_id", async (req, res) => {
   const user_id = req.params.user_id
   console.log(JSON.stringify(req.body))
 
-  app.get("/users", async (req, res) => {
-    console.log(`Verified ${req.jwt_user_id} : ${req.jwt_roles}`)
-    let result = { success: false, message: "Not allowed." }
-    if (is_admin(req.jwt_roles)) {
-      result = await getUsers()
-    }
-    res.send(result)
-  })
-
-  app.get("/users/:id", async (req, res) => {
-    const id = req.params.id
-    let result = { success: false, message: "Not allowed." }
-    if (is_admin(req.jwt_roles)) {
-      result = await getUser(id)
-    }
-    res.send(result)
-  })
-
   let result = { success: false, message: "Not allowed." }
   if (is_admin(req.jwt_roles)) {
     console.log("deleting user")
     result = await delete_user({ user_id: user_id })
+  }
+  res.send(result)
+})
+
+app.get("/users", async (req, res) => {
+  console.log(`Verified ${req.jwt_user_id} : ${req.jwt_roles}`)
+  let result = { success: false, message: "Not allowed." }
+  if (is_admin(req.jwt_roles)) {
+    result = await getUsers()
+  }
+  res.send(result)
+})
+
+app.get("/users/:id", async (req, res) => {
+  const id = req.params.id
+  let result = { success: false, message: "Not allowed." }
+  if (is_admin(req.jwt_roles)) {
+    result = await getUser(id)
   }
   res.send(result)
 })
@@ -266,6 +266,54 @@ app.post("/update_password", async (req, res) => {
   const { password, confirm_password } = req.body
   const user_id = req.jwt_user_id
   const result = await update_password({ user_id, password, confirm_password })
+  res.send(result)
+})
+
+/* NOTES API */
+app.post("add_note", async (req, res) => {
+  console.log("POST: add_note")
+  const { note } = req.body
+  const user_id = req.jwt_user_id
+  const result = await addNote({ user_id, note })
+  res.send(result)
+})
+
+app.post("edit_note", async (req, res) => {
+  console.log("POST: edit_note")
+  const { note } = req.body
+  const user_id = req.jwt_user_id
+  const result = await updateNote({ user_id, note })
+  res.send(result)
+})
+
+app.post("edit_note", async (req, res) => {
+  console.log("POST: edit_note")
+  const { note } = req.body
+  const user_id = req.jwt_user_id
+  const result = await updateNote({ user_id, note })
+  res.send(result)
+})
+
+app.post("/delete_note", async (req, res) => {
+  console.log("GET: /delete_note")
+  const { note_id } = req.body
+  const user_id = req.jwt_user_id
+  const result = await deleteNote({ user_id, note_id })
+  res.send(result)
+})
+
+app.get("/notes/:note_id", async (req, res) => {
+  console.log("GET: /notes:note_id")
+  const note_id = req.params.note
+  const user_id = req.jwt_user_id
+  const result = await getNote({ user_id, note_id })
+  res.send(result)
+})
+
+app.get("/notess", async (req, res) => {
+  console.log("GET: /notes")
+  const user_id = req.jwt_user_id
+  const result = await getNotes({ user_id, note_id })
   res.send(result)
 })
 

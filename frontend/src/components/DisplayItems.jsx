@@ -10,7 +10,7 @@ import {
   useEditItemPurchasedLocation,
   useEditItemPurchasedDate,
   useEditItemCost,
-} from "../data/stuff/useStuff"
+} from "../data/notes/useNotes"
 
 import { InputText } from "primereact/inputtext"
 import DatePicker from "react-datepicker"
