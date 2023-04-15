@@ -34,6 +34,9 @@ const AddEditNoteForm = (props) => {
     note: note,
   })
 
+  //console.log(`Note value is now: ${note}`)
+  //console.log(`Form Note value is now: ${form.note}`)
+
   const handleChange = (event) => {
     setForm({
       ...form,

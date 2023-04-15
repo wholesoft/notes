@@ -8,6 +8,10 @@ const useNote = (note_id) => {
   const selectQuery = useQuery({
     queryKey: ["notes", note_id],
     queryFn: () => getNote(note_id),
+    refetchOnReconnect: false,
+    retry: false,
+    retryOnMount: false,
+    refetchOnWindowFocus: false,
   })
   return selectQuery
 }

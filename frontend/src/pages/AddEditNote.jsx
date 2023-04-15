@@ -27,7 +27,7 @@ const AddEditNote = () => {
     //console.log(dataQuery.data)
     note_id = dataQuery.data[0].note_id
   }
-
+  console.log("AddEditNote Render")
   return (
     <>
       {tabTitle(pageTitle)}
