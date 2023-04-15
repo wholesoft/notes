@@ -6,5 +6,7 @@ CREATE TABLE `Notes` (
   `note` text,
   `created` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime DEFAULT CURRENT_TIMESTAMP,
+  `created_usertime` DATETIME,
+  `user_timezone` VARCHAR(255),
   PRIMARY KEY (`id`)
 )

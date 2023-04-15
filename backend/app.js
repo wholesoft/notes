@@ -274,9 +274,9 @@ app.post("/update_password", async (req, res) => {
 /* NOTES API */
 app.post("/add_note", async (req, res) => {
   console.log("POST: add_note")
-  const { note } = req.body
+  const { note, local_time, timezone } = req.body
   const user_id = req.jwt_user_id
-  const result = await addNote({ user_id, note })
+  const result = await addNote({ user_id, note, local_time, timezone })
   res.send(result)
 })
 

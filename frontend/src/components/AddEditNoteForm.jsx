@@ -7,6 +7,29 @@ import { Toast } from "primereact/toast"
 import { Card } from "primereact/card"
 import { Checkbox } from "primereact/checkbox"
 
+function get_local_mysql_datetime() {
+  // current datetime in mysql format
+  // YYYY-MM-DD HH:MM:SS
+  var d = new Date()
+  var datestring =
+    d.getFullYear() +
+    "-" +
+    ("0" + (d.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + d.getDate()).slice(-2) +
+    " " +
+    ("0" + d.getHours()).slice(-2) +
+    ":" +
+    ("0" + d.getMinutes()).slice(-2) +
+    ":" +
+    ("0" + d.getSeconds()).slice(-2)
+  return datestring
+}
+
+function get_local_timezone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone
+}
+
 const AddEditNoteForm = (props) => {
   const toastRef = useRef()
   const addMutation = useAddNote(toastRef)
@@ -56,13 +79,18 @@ const AddEditNoteForm = (props) => {
         editMutation.mutate({ note_id: id, note })
       }
     } else {
-      addMutation.mutate({ note })
+      const local_time = get_local_mysql_datetime()
+      const timezone = get_local_timezone()
+      addMutation.mutate({ note, local_time, timezone })
     }
     //setForm({ group: "", notes: "" })
   }
 
   return (
     <>
+      <b> {get_local_mysql_datetime()}</b>
+      <br />
+      <b>{get_local_timezone()}</b>
       <Card title={cardTitle} className="col-12 md:col-6">
         <form onSubmit={handleSubmit}>
           <div className="p-fluid">

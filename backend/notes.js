@@ -25,6 +25,8 @@ export async function addNote(props) {
   const schema = joi.object({
     user_id: joi.number().integer().required(),
     note: joi.string().required(),
+    local_time: joi.string().required(),
+    timezone: joi.string().allow(""),
   })
 
   const { error, value } = schema.validate(props)
@@ -41,9 +43,10 @@ export async function addNote(props) {
   if (validation_okay) {
     const result = await pool.query(
       `
-         INSERT INTO Notes (user_id, note, created, updated) VALUES (?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
+         INSERT INTO Notes (user_id, note, created, updated, created_usertime, user_timezone) 
+         VALUES (?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,?,?)
          `,
-      [props.user_id, props.note]
+      [props.user_id, props.note, props.local_time, props.timezone]
     )
     success = true
     message = `Note Added.`
@@ -200,15 +203,17 @@ export async function getNote(props) {
 
 /*
 Notes
-+-------------+--------------+------+-----+-------------------+-------------------+
-| Field       | Type         | Null | Key | Default           | Extra             |
-+-------------+--------------+------+-----+-------------------+-------------------+
-| id          | int          | NO   | PRI | NULL              | auto_increment    |
-| user_id     | int          | YES  |     | NULL              |                   |
-| title       | varchar(255) | YES  |     | NULL              |                   |
-| description | varchar(255) | YES  |     | NULL              |                   |
-| note        | text         | YES  |     | NULL              |                   |
-| created     | datetime     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
-| updated     | datetime     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
-+-------------+--------------+------+-----+-------------------+-------------------+
++------------------+--------------+------+-----+-------------------+-------------------+
+| Field            | Type         | Null | Key | Default           | Extra             |
++------------------+--------------+------+-----+-------------------+-------------------+
+| id               | int          | NO   | PRI | NULL              | auto_increment    |
+| user_id          | int          | YES  |     | NULL              |                   |
+| title            | varchar(255) | YES  |     | NULL              |                   |
+| description      | varchar(255) | YES  |     | NULL              |                   |
+| note             | text         | YES  |     | NULL              |                   |
+| created          | datetime     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| updated          | datetime     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| created_usertime | datetime     | YES  |     | NULL              |                   |
+| user_timezone    | varchar(255) | YES  |     | NULL              |                   |
++------------------+--------------+------+-----+-------------------+-------------------+
 */
