@@ -38,7 +38,7 @@ export async function addNote(props) {
     return { success: false, message: message }
   }
 
-  // Add the Group
+  // Add the Note
   let note_id = 0
   if (validation_okay) {
     const result = await pool.query(
@@ -156,7 +156,8 @@ export async function getNotes(props) {
   }
   const [rows] = await pool.query(
     `
-      SELECT id, note, title, description, created, updated
+      SELECT id, note, title, description, created, updated, 
+      DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone
       FROM Notes
       WHERE user_id=?
       ORDER BY id DESC
@@ -191,7 +192,9 @@ export async function getNote(props) {
   }
   const [rows] = await pool.query(
     `
-      SELECT id, note, title, description, created, updated FROM Notes WHERE user_id=? AND id=?
+      SELECT id, note, title, description, created, updated,
+      DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone
+      FROM Notes WHERE user_id=? AND id=?
       `,
     [props.user_id, props.note_id]
   )

@@ -88,9 +88,6 @@ const AddEditNoteForm = (props) => {
 
   return (
     <>
-      <b> {get_local_mysql_datetime()}</b>
-      <br />
-      <b>{get_local_timezone()}</b>
       <Card title={cardTitle} className="col-12 md:col-6">
         <form onSubmit={handleSubmit}>
           <div className="p-fluid">

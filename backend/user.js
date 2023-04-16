@@ -370,7 +370,7 @@ function generate_access_token(user_id, roles) {
   return jwt.sign(
     { user_id: user_id, roles: roles },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "20m" }
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRES }
   )
 }
 
@@ -378,7 +378,7 @@ function generate_refresh_token(user_id, roles, ip_address, user_agent) {
   const refresh_token = jwt.sign(
     { user_id: user_id, roles: roles },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "1d" }
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIRES }
   )
 
   pool.query(

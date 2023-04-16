@@ -154,3 +154,13 @@ body {
     "content"
     "footer";
 }
+
+.span_link {
+  color: blue;
+  text-decoration: underline;
+}
+
+.span_link:hover {
+  cursor: pointer;
+  text-decoration: none;
+}

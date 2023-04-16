@@ -64,7 +64,7 @@ function generate_access_token(user_id, roles) {
   return jwt.sign(
     { user_id: user_id, roles: roles },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "20m" }
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRES }
   )
 }
 

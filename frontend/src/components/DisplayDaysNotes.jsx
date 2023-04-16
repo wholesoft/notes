@@ -5,25 +5,18 @@ import { useNotes, useDeleteNote } from "../data/notes/useNotes"
 import { Toast } from "primereact/toast"
 import { Card } from "primereact/card"
 
-function formatDate(date_string) {
-  let result = ""
-  if (date_string != null) {
-    result = new Date(date_string).toLocaleDateString()
-  }
-  return result
-}
-
-function formatDateTime(date_string) {
+function formatTime(date_string) {
   // Should output in this format:
-  // 6:59 AM 4/14/2023
+  // 6:59 AM
   let result = ""
   if (date_string != null) {
-    let dateString = new Date(date_string).toLocaleDateString()
+    //let dateString = new Date(date_string).toLocaleDateString()
     let timeString = new Date(date_string).toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
     })
-    result = `${timeString} ${dateString}`
+    //result = `${timeString} ${dateString}`
+    result = `${timeString}`
   }
   return result
 }
@@ -33,20 +26,24 @@ const DisplayDaysNotes = () => {
 
   const notesQuery = useNotes()
   const deleteMutation = useDeleteNote(toastRef)
+  const [currentDay, setCurrentDay] = useState(new Date().toLocaleDateString())
 
-  let displayUpdated = (rowData) => {
-    let value = rowData.updated
-    return formatDate(value)
+  const handlePrev = () => {
+    console.log("howdy")
+    let prevDay = new Date(currentDay)
+    prevDay.setDate(prevDay.getDate() - 1)
+    prevDay = prevDay.toLocaleDateString()
+    console.log(prevDay)
+    setCurrentDay(prevDay)
   }
 
-  let displayCreated = (rowData) => {
-    let value = rowData.created
-    return formatDate(value)
-  }
-
-  let displayDetails = (rowData) => {
-    let id = rowData.id
-    return <Link to={`/notes/${id}`}>details</Link>
+  const handleNext = () => {
+    console.log("howdy")
+    let nextDay = new Date(currentDay)
+    nextDay.setDate(nextDay.getDate() + 1)
+    nextDay = nextDay.toLocaleDateString()
+    console.log(nextDay)
+    setCurrentDay(nextDay)
   }
 
   if (notesQuery.isLoading) return <h1>Loading...</h1>
@@ -54,39 +51,73 @@ const DisplayDaysNotes = () => {
     return <pre>{JSON.stringify(notesQuery.error)}</pre>
   }
   const data = notesQuery.data
-  //console.log(data)
+
+  // pass in a date_string if we want a different day
+  // working with dates is such a joy
+
+  const day_to_show = new Date(currentDay).toLocaleDateString() // mm/dd/yyyy
+  const day_to_filter = new Date(currentDay).toISOString().slice(0, 10) // yyyy-mm-dd
+  let next_day = new Date(currentDay)
+  next_day.setDate(next_day.getDate() + 1)
+  next_day = next_day.toISOString().slice(0, 10) // yyyy-mm-dd
+
+  const days_data = data.filter(function (el) {
+    return (
+      el.created_usertime >= day_to_filter && el.created_usertime <= next_day
+    )
+  })
+  days_data.reverse()
+  console.log(days_data)
+  console.log(data)
   return (
     <>
       <div className="grid">
-        {data.map((row) => {
-          return (
-            <div key={row.id} className="col-12 md:col-6 lg:col-3 xl: col-2">
-              <Card
-                title=""
-                subTitle={formatDateTime(row.created)}
-                className=""
-                style={{ position: "relative" }}
-              >
-                <div>{row.note}</div>
-                <div
-                  style={{ position: "absolute", top: "10px", right: "10px" }}
-                >
-                  <Link to={`/edit_note/${row.id}`}>
-                    <span className="pi pi-pencil"></span>
-                  </Link>
-                  <span
-                    className="pi pi-trash ml-2"
-                    onClick={(e) => {
-                      deleteMutation.mutate(row.id)
+        <div className="col-12 lg:col-8">
+          <div style={{ textAlign: "center" }} className="pb-2">
+            <span className="span_link" onClick={handlePrev}>
+              prev
+            </span>{" "}
+            &mdash;{" "}
+            <span className="span_link" onClick={handleNext}>
+              next
+            </span>
+          </div>
+          <Card
+            title={day_to_show}
+            subTitle=""
+            className=""
+            style={{ position: "relative" }}
+          >
+            {days_data.map((row) => {
+              return (
+                <div key={row.id} style={{ position: "relative" }}>
+                  <div>
+                    <b>{formatTime(row.created)}</b>
+                  </div>
+                  <div className="mt-2 mb-6">{row.note}</div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
                     }}
-                  ></span>
+                  >
+                    <Link to={`/edit_note/${row.id}`}>
+                      <span className="pi pi-pencil"></span>
+                    </Link>
+                    <span
+                      className="pi pi-trash ml-2"
+                      onClick={(e) => {
+                        deleteMutation.mutate(row.id)
+                      }}
+                    ></span>
+                  </div>
                 </div>
-              </Card>
-            </div>
-          )
-        })}
+              )
+            })}
+          </Card>
+        </div>
       </div>
-      <Toast ref={toastRef} />
     </>
   )
 }
