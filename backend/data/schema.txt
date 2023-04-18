@@ -8,5 +8,6 @@ CREATE TABLE `Notes` (
   `updated` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_usertime` DATETIME,
   `user_timezone` VARCHAR(255),
+  `rating` INT,
   PRIMARY KEY (`id`)
 )

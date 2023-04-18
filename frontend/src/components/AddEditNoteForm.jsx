@@ -6,6 +6,7 @@ import { Button } from "primereact/button"
 import { Toast } from "primereact/toast"
 import { Card } from "primereact/card"
 import { Checkbox } from "primereact/checkbox"
+import { Slider } from "primereact/slider"
 
 function get_local_mysql_datetime() {
   // current datetime in mysql format
@@ -37,15 +38,21 @@ const AddEditNoteForm = (props) => {
   const deleteMutation = useDeleteNote(toastRef)
 
   const [deleteCheck, setDeleteCheck] = useState(false)
+  //const [rating, setRating] = useState(0)
 
   let id = 0
 
   let note = ""
-
+  let rating = 0
   //console.log(props)
   if (props.data != undefined) {
     id = props.data.id
     note = props.data.note
+    rating = props.data.rating
+    console.log(rating)
+    if (rating == null) {
+      rating = 0
+    }
   }
 
   let cardTitle = "Add Note"
@@ -55,6 +62,7 @@ const AddEditNoteForm = (props) => {
 
   const [form, setForm] = useState({
     note: note,
+    rating: rating,
   })
 
   //console.log(`Note value is now: ${note}`)
@@ -67,21 +75,28 @@ const AddEditNoteForm = (props) => {
     })
   }
 
+  const handleRatingChange = (new_rating) => {
+    setForm({
+      ...form,
+      rating: new_rating,
+    })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     e.stopPropagation()
     let response = ""
-    const { note } = form
+    const { note, rating } = form
     if (id > 0) {
       if (deleteCheck) {
         deleteMutation.mutate(id)
       } else {
-        editMutation.mutate({ note_id: id, note })
+        editMutation.mutate({ note_id: id, note, rating })
       }
     } else {
       const local_time = get_local_mysql_datetime()
       const timezone = get_local_timezone()
-      addMutation.mutate({ note, local_time, timezone })
+      addMutation.mutate({ note, local_time, timezone, rating })
     }
     //setForm({ group: "", notes: "" })
   }
@@ -100,6 +115,25 @@ const AddEditNoteForm = (props) => {
                 cols={30}
               />
               <label htmlFor="notes">Note</label>
+            </span>
+          </div>
+
+          <div className="p-fluid mt-4">
+            <span className="p-float-label mt-0">
+              <InputText
+                id="rating"
+                value={form.rating}
+                onChange={(e) => handleRatingChange(e.target.value)}
+                className="w-full"
+              />
+              <Slider
+                value={form.rating}
+                onChange={(e) => handleRatingChange(e.value)}
+                min={-100}
+                max={100}
+                className="w-full"
+              />
+              <label htmlFor="rating">Rating</label>
             </span>
           </div>
 

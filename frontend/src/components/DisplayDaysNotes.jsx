@@ -74,16 +74,22 @@ const DisplayDaysNotes = () => {
       <div className="grid">
         <div className="col-12 lg:col-8">
           <div style={{ textAlign: "center" }} className="pb-2">
-            <span className="span_link" onClick={handlePrev}>
-              prev
-            </span>{" "}
-            &mdash;{" "}
-            <span className="span_link" onClick={handleNext}>
-              next
+            <span
+              className="pi pi-arrow-left text-sm"
+              onClick={handlePrev}
+            ></span>
+            &nbsp;&nbsp;
+            <span className="text-2xl text-bold">
+              <b>{day_to_show}</b>
             </span>
+            &nbsp;&nbsp;
+            <span
+              className="pi pi-arrow-right text-sm"
+              onClick={handleNext}
+            ></span>
           </div>
           <Card
-            title={day_to_show}
+            title=""
             subTitle=""
             className=""
             style={{ position: "relative" }}
@@ -94,6 +100,7 @@ const DisplayDaysNotes = () => {
                   <div>
                     <b>{formatTime(row.created)}</b>
                   </div>
+                  <div className="text-xs">Rating: {row.rating}</div>
                   <div className="mt-2 mb-6">{row.note}</div>
                   <div
                     style={{

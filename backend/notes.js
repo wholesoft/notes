@@ -27,6 +27,7 @@ export async function addNote(props) {
     note: joi.string().required(),
     local_time: joi.string().required(),
     timezone: joi.string().allow(""),
+    rating: joi.number().integer().allow(null),
   })
 
   const { error, value } = schema.validate(props)
@@ -43,10 +44,16 @@ export async function addNote(props) {
   if (validation_okay) {
     const result = await pool.query(
       `
-         INSERT INTO Notes (user_id, note, created, updated, created_usertime, user_timezone) 
-         VALUES (?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,?,?)
+         INSERT INTO Notes (user_id, note, created, updated, created_usertime, user_timezone, rating) 
+         VALUES (?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,?,?,?)
          `,
-      [props.user_id, props.note, props.local_time, props.timezone]
+      [
+        props.user_id,
+        props.note,
+        props.local_time,
+        props.timezone,
+        props.rating,
+      ]
     )
     success = true
     message = `Note Added.`
@@ -68,6 +75,7 @@ export async function updateNote(props) {
     user_id: joi.number().integer().required(),
     note_id: joi.number().integer().required(),
     note: joi.string().required(),
+    rating: joi.number().integer().allow(null),
   })
 
   const { error, value } = schema.validate(props)
@@ -83,10 +91,10 @@ export async function updateNote(props) {
   if (validation_okay) {
     const result = await pool.query(
       `
-         UPDATE Notes SET note=?, updated=CURRENT_TIMESTAMP
+         UPDATE Notes SET note=?, updated=CURRENT_TIMESTAMP, rating=?
          WHERE id=? AND user_id=?
          `,
-      [props.note, props.note_id, props.user_id]
+      [props.note, props.rating, props.note_id, props.user_id]
     )
     console.log(result)
     success = true
@@ -156,7 +164,7 @@ export async function getNotes(props) {
   }
   const [rows] = await pool.query(
     `
-      SELECT id, note, title, description, created, updated, 
+      SELECT id, note, title, description, created, updated, rating,
       DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone
       FROM Notes
       WHERE user_id=?
@@ -192,7 +200,7 @@ export async function getNote(props) {
   }
   const [rows] = await pool.query(
     `
-      SELECT id, note, title, description, created, updated,
+      SELECT id, note, title, description, created, updated, rating,
       DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone
       FROM Notes WHERE user_id=? AND id=?
       `,

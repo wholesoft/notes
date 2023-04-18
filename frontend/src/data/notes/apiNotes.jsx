@@ -31,6 +31,7 @@ const addNote = async (data) => {
 const editNote = async (data) => {
   console.log("editNote")
   const url = "/edit_note"
+  console.log(data)
   data = JSON.stringify(data)
   const response = await axiosAuth.post(url, data)
   //console.log(response)

@@ -69,6 +69,7 @@ const Login = () => {
       } else {
         error_message = "Login Failed"
       }
+      console.log(error_message)
       setErrMsg(error_message)
       toastRef.current.show({
         severity: "info",
