@@ -6,6 +6,12 @@ const getNotes = async () => {
   return response.data.data
 }
 
+const getNoteDates = async () => {
+  const url = `/note_dates`
+  const response = await axiosAuth.get(url)
+  return response.data.data
+}
+
 const getNote = async (note_id) => {
   const url = `/notes/${note_id}`
   //console.log(url)
@@ -38,4 +44,4 @@ const editNote = async (data) => {
   return response
 }
 
-export { getNotes, getNote, deleteNote, addNote, editNote }
+export { getNotes, getNote, deleteNote, addNote, editNote, getNoteDates }

@@ -1,6 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
-import { getNote, getNotes, deleteNote, addNote, editNote } from "./apiNotes"
+import {
+  getNote,
+  getNotes,
+  deleteNote,
+  addNote,
+  editNote,
+  getNoteDates,
+} from "./apiNotes"
 
 /* GROUPS */
 
@@ -20,6 +27,14 @@ const useNotes = () => {
   const selectQuery = useQuery({
     queryKey: ["notes"],
     queryFn: () => getNotes(),
+  })
+  return selectQuery
+}
+
+const useNoteDates = () => {
+  const selectQuery = useQuery({
+    queryKey: ["note_dates"],
+    queryFn: () => getNoteDates(),
   })
   return selectQuery
 }
@@ -110,4 +125,11 @@ const useEditNote = (toastRef) => {
   return editMutation
 }
 
-export { useNotes, useNote, useEditNote, useDeleteNote, useAddNote }
+export {
+  useNotes,
+  useNote,
+  useEditNote,
+  useDeleteNote,
+  useAddNote,
+  useNoteDates,
+}

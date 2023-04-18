@@ -176,6 +176,44 @@ export async function getNotes(props) {
   return { success: true, message: "OK", data: rows }
 }
 
+export async function getNoteDates(props) {
+  // getNotes({ user_id })
+  // Returns { 'success': true/false , 'message': '', 'data': [] }
+  let success = false
+  let message = ""
+  let validation_okay = true
+
+  // VALIDATE INPUT
+  const schema = joi.object({
+    user_id: joi.number().integer().required(),
+  })
+
+  const { error, value } = schema.validate(props)
+  if (error) {
+    console.log(error)
+    console.log("Validation Error.")
+    message = "Vaidation Error (" + error.details[0].message + ")"
+    validation_okay = false
+    return { success: false, message: message, data: [] }
+  }
+  const [rows] = await pool.query(
+    `
+      SELECT DISTINCT DATE_FORMAT(created_usertime, "%c/%e/%Y") as note_date
+      FROM Notes
+      WHERE user_id=?
+      ORDER BY note_date DESC
+      `,
+    [props.user_id]
+  )
+  // %c/%e/%Y returns the month and day without leading zeros
+  // Using that to make it easier to work with the PrimeReact Calendar control
+
+  const datesArray = new Array()
+  rows.map((row) => datesArray.push(row.note_date))
+
+  return { success: true, message: "OK", data: datesArray }
+}
+
 export async function getNote(props) {
   // getNote({ user_id, note_id })
   // Returns { 'success': true/false , 'message': '', 'data': [] }

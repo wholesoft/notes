@@ -4,7 +4,14 @@ import multer from "multer"
 import fs from "fs"
 import UserAgent from "user-agents"
 
-import { getNote, getNotes, addNote, updateNote, deleteNote } from "./notes.js"
+import {
+  getNote,
+  getNotes,
+  addNote,
+  updateNote,
+  deleteNote,
+  getNoteDates,
+} from "./notes.js"
 
 import {
   create_user,
@@ -308,6 +315,13 @@ app.get("/notes", async (req, res) => {
   console.log("GET: /notes")
   const user_id = req.jwt_user_id
   const result = await getNotes({ user_id })
+  res.send(result)
+})
+
+app.get("/note_dates", async (req, res) => {
+  console.log("GET: /notes")
+  const user_id = req.jwt_user_id
+  const result = await getNoteDates({ user_id })
   res.send(result)
 })
 

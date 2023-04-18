@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
 import { Link } from "react-router-dom"
-import { useNotes, useDeleteNote } from "../data/notes/useNotes"
-
+import { useNotes, useDeleteNote, useNoteDates } from "../data/notes/useNotes"
+import { Calendar } from "primereact/calendar"
 import { Toast } from "primereact/toast"
 import { Card } from "primereact/card"
 
@@ -25,39 +25,55 @@ const DisplayDaysNotes = () => {
   const toastRef = useRef()
 
   const notesQuery = useNotes()
+  const noteDatesQuery = useNoteDates()
   const deleteMutation = useDeleteNote(toastRef)
-  const [currentDay, setCurrentDay] = useState(new Date().toLocaleDateString())
+  const [date, setDate] = useState(new Date())
 
   const handlePrev = () => {
-    console.log("howdy")
-    let prevDay = new Date(currentDay)
+    //console.log("howdy")
+    let prevDay = new Date(date)
     prevDay.setDate(prevDay.getDate() - 1)
-    prevDay = prevDay.toLocaleDateString()
-    console.log(prevDay)
-    setCurrentDay(prevDay)
+    setDate(prevDay)
   }
 
   const handleNext = () => {
-    console.log("howdy")
-    let nextDay = new Date(currentDay)
+    //console.log("howdy")
+    let nextDay = new Date(date)
     nextDay.setDate(nextDay.getDate() + 1)
-    nextDay = nextDay.toLocaleDateString()
-    console.log(nextDay)
-    setCurrentDay(nextDay)
+    setDate(nextDay)
   }
 
-  if (notesQuery.isLoading) return <h1>Loading...</h1>
+  const handleDateChange = (e) => {
+    //console.log("handleDateChange")
+    setDate(e.value)
+  }
+
+  if (notesQuery.isLoading || noteDatesQuery.isLoading)
+    return <h1>Loading...</h1>
   if (notesQuery.isError) {
     return <pre>{JSON.stringify(notesQuery.error)}</pre>
   }
+
+  const dateTemplate = (date) => {
+    // this date will have a month with 0 = Jan, 11 = Nov
+    if (noteDatesQuery.isFetched) {
+      let formatDate = `${date.month + 1}/${date.day}/${date.year}`
+      if (noteDatesQuery.data.includes(formatDate)) {
+        return <strong>{date.day}</strong>
+      }
+    }
+
+    return date.day
+  }
+
   const data = notesQuery.data
 
   // pass in a date_string if we want a different day
   // working with dates is such a joy
 
-  const day_to_show = new Date(currentDay).toLocaleDateString() // mm/dd/yyyy
-  const day_to_filter = new Date(currentDay).toISOString().slice(0, 10) // yyyy-mm-dd
-  let next_day = new Date(currentDay)
+  //const day_to_filter = new Date(currentDay).toISOString().slice(0, 10) // yyyy-mm-dd
+  const day_to_filter = date.toISOString().slice(0, 10) // yyyy-mm-dd
+  let next_day = new Date(date) //CHECK THIS
   next_day.setDate(next_day.getDate() + 1)
   next_day = next_day.toISOString().slice(0, 10) // yyyy-mm-dd
 
@@ -67,8 +83,7 @@ const DisplayDaysNotes = () => {
     )
   })
   days_data.reverse()
-  console.log(days_data)
-  console.log(data)
+
   return (
     <>
       <div className="grid">
@@ -79,15 +94,19 @@ const DisplayDaysNotes = () => {
               onClick={handlePrev}
             ></span>
             &nbsp;&nbsp;
-            <span className="text-2xl text-bold">
-              <b>{day_to_show}</b>
-            </span>
+            <Calendar
+              value={date}
+              onChange={handleDateChange}
+              showIcon
+              dateTemplate={dateTemplate}
+            />
             &nbsp;&nbsp;
             <span
               className="pi pi-arrow-right text-sm"
               onClick={handleNext}
             ></span>
           </div>
+          <div></div>
           <Card
             title=""
             subTitle=""
