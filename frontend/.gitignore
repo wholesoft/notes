@@ -39,3 +39,6 @@ typings/
 
 # Test directory
 test/
+
+# Other
+.DS_Store
