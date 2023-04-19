@@ -42,3 +42,4 @@ test/
 
 # Other
 .DS_Store
+.env
