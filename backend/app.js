@@ -13,6 +13,8 @@ import {
   getNoteDates,
 } from "./notes.js"
 
+import { getUserActivity } from "./applog.js"
+
 import {
   create_user,
   confirm_email,
@@ -275,6 +277,16 @@ app.post("/update_password", async (req, res) => {
   const { password, confirm_password } = req.body
   const user_id = req.jwt_user_id
   const result = await update_password({ user_id, password, confirm_password })
+  res.send(result)
+})
+
+/* USER LOG */
+
+getUserActivity
+app.get("/userlog", async (req, res) => {
+  console.log("GET: /userlog")
+  const user_id = req.jwt_user_id
+  const result = await getUserActivity({ user_id })
   res.send(result)
 })
 

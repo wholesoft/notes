@@ -57,6 +57,38 @@ export async function logEvent(props) {
   return { success, message, log_id }
 }
 
+export async function getUserActivity(props) {
+  // Returns { 'success': true/false , 'message': '', 'data': [] }
+  let success = false
+  let message = ""
+  let validation_okay = true
+
+  // VALIDATE INPUT
+  const schema = joi.object({
+    user_id: joi.number().integer().required(),
+  })
+
+  const { error, value } = schema.validate(props)
+  if (error) {
+    console.log(error)
+    console.log("Validation Error.")
+    message = "Vaidation Error (" + error.details[0].message + ")"
+    validation_okay = false
+    return { success: false, message: message, data: [] }
+  }
+  const [rows] = await pool.query(
+    `
+        SELECT id, note_id, event, details, misc, created
+        FROM AppLog
+        WHERE user_id=?
+        ORDER BY id DESC
+        `,
+    [props.user_id]
+  )
+
+  return { success: true, message: "OK", data: rows }
+}
+
 /*
 describe AppLog;
 +---------+--------------+------+-----+-------------------+-------------------+
