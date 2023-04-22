@@ -54,7 +54,7 @@ const DisplayNotes = () => {
     return <pre>{JSON.stringify(notesQuery.error)}</pre>
   }
   const data = notesQuery.data
-  //console.log(data)
+
   return (
     <>
       <div className="grid">

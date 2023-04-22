@@ -11,3 +11,14 @@ CREATE TABLE `Notes` (
   `rating` INT,
   PRIMARY KEY (`id`)
 )
+
+
+CREATE TABLE `AppLog` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` INT, 
+  `event` VARCHAR(255),
+  `details` VARCHAR(255), 
+  `misc` text,
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)

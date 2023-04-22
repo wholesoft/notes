@@ -71,8 +71,12 @@ const DisplayDaysNotes = () => {
   // pass in a date_string if we want a different day
   // working with dates is such a joy
 
-  //const day_to_filter = new Date(currentDay).toISOString().slice(0, 10) // yyyy-mm-dd
-  const day_to_filter = date.toISOString().slice(0, 10) // yyyy-mm-dd
+  const offset = date.getTimezoneOffset()
+  let day_to_filter = new Date(date.getTime() - offset * 60 * 1000)
+  day_to_filter = day_to_filter.toISOString().split("T")[0]
+
+  //const day_to_filter = date.toISOString().slice(0, 10) // yyyy-mm-dd
+
   let next_day = new Date(date) //CHECK THIS
   next_day.setDate(next_day.getDate() + 1)
   next_day = next_day.toISOString().slice(0, 10) // yyyy-mm-dd
@@ -83,6 +87,10 @@ const DisplayDaysNotes = () => {
     )
   })
   days_data.reverse()
+
+  console.log("render DisplayDaysNotes")
+  console.log(day_to_filter)
+  //console.log(date.toISOString())
 
   return (
     <>
@@ -120,7 +128,12 @@ const DisplayDaysNotes = () => {
                     <b>{formatTime(row.created)}</b>
                   </div>
                   <div className="text-xs">Rating: {row.rating}</div>
-                  <div className="mt-2 mb-6">{row.note}</div>
+                  <div
+                    className="mt-2 mb-6"
+                    style={{ "white-space": "pre-wrap" }}
+                  >
+                    {row.note}
+                  </div>
                   <div
                     style={{
                       position: "absolute",

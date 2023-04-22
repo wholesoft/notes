@@ -1,6 +1,7 @@
 import mysql from "mysql2"
 import dotenv from "dotenv"
 import joi from "joi"
+import { logEvent } from "./applog.js"
 
 dotenv.config()
 
@@ -58,6 +59,12 @@ export async function addNote(props) {
     success = true
     message = `Note Added.`
     note_id = result[0].insertId
+    logEvent({
+      user_id: props.user_id,
+      event: "Note Added",
+      note_id: note_id,
+      details: props.note.length + " characters long",
+    })
   }
 
   return { success: success, message: message, note_id: note_id }
@@ -99,6 +106,13 @@ export async function updateNote(props) {
     console.log(result)
     success = true
     message = `Note Updated.`
+
+    logEvent({
+      user_id: props.user_id,
+      event: "Note Updated",
+      note_id: props.note_id,
+      details: props.note.length + " characters long",
+    })
   }
 
   return { success: success, message: message, note_id: props.note_id }
@@ -136,7 +150,14 @@ export async function deleteNote(props) {
     )
     console.log(result)
     success = true
-    message = `Note Deleted (${props.group_id}).`
+    message = `Note Deleted (${props.note_id}).`
+
+    logEvent({
+      user_id: props.user_id,
+      event: "Note Deleted",
+      note_id: props.note_id,
+      details: "i hope that one wasn't important",
+    })
   }
 
   return { success: success, message: message }
