@@ -128,10 +128,7 @@ const DisplayDaysNotes = () => {
                     <b>{formatTime(row.created)}</b>
                   </div>
                   <div className="text-xs">Rating: {row.rating}</div>
-                  <div
-                    className="mt-2 mb-6"
-                    style={{ "white-space": "pre-wrap" }}
-                  >
+                  <div className="mt-2 mb-6" style={{ whiteSpace: "pre-wrap" }}>
                     {row.note}
                   </div>
                   <div

@@ -16,6 +16,7 @@ CREATE TABLE `Notes` (
 CREATE TABLE `AppLog` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` INT, 
+  `note_id` INT, 
   `event` VARCHAR(255),
   `details` VARCHAR(255), 
   `misc` text,

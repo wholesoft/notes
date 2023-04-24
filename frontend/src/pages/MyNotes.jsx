@@ -9,6 +9,7 @@ const MyNotes = () => {
       <p className="text-sm">
         <Link to="/add_note">Add Note</Link>
       </p>
+
       <DisplayNotes />
     </>
   )
