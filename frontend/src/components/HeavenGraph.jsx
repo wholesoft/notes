@@ -31,6 +31,27 @@ ChartJS.register(
 
 const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length
 
+function cloneJSON(obj) {
+  // basic type deep copy
+  if (obj === null || obj === undefined || typeof obj !== "object") {
+    return obj
+  }
+  // array deep copy
+  if (obj instanceof Array) {
+    var cloneA = []
+    for (var i = 0; i < obj.length; ++i) {
+      cloneA[i] = cloneJSON(obj[i])
+    }
+    return cloneA
+  }
+  // object deep copy
+  var cloneO = {}
+  for (var i in obj) {
+    cloneO[i] = cloneJSON(obj[i])
+  }
+  return cloneO
+}
+
 function formatDate(dateString) {
   let result = ""
   if (dateString != null) {
@@ -78,7 +99,10 @@ const HeavenGraph = () => {
   let ratings = []
   let n = []
   let i = 0
-  rowData.reverse().map((row) => {
+
+  let myData = cloneJSON(rowData).reverse()
+
+  myData.map((row) => {
     i += 1
     n.push(String(i))
     let thisRating = row.rating
