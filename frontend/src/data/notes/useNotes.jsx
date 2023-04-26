@@ -109,13 +109,16 @@ const useEditNote = (toastRef) => {
     },
     onSuccess: (props) => {
       //console.log("mutate success")
-      //console.log(props)
+      console.log(props.data)
       toastRef.current.show({
         severity: "info",
         summary: "Saved",
         detail: "Note Saved.",
       })
-      navigate("/mynotes") // TODO: display toast message after navigating
+      // need to set the date to whatever the edit does is
+      let note_date = props.data.note.created_usertime.slice(0, 10) // yyyy-mm-dd
+      //console.log(note_date)
+      navigate(`/mynotes/${note_date}`) // TODO: display toast message after navigating
       return queryClient.invalidateQueries(["groups"])
     },
     onError: (props) => {

@@ -115,7 +115,15 @@ export async function updateNote(props) {
     })
   }
 
-  return { success: success, message: message, note_id: props.note_id }
+  // return the note
+  const res = await getNote({ note_id: props.note_id, user_id: props.user_id })
+
+  return {
+    success: success,
+    message: message,
+    note_id: props.note_id,
+    note: res.data[0],
+  }
 }
 
 export async function deleteNote(props) {

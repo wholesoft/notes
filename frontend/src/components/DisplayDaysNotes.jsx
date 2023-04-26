@@ -21,31 +21,52 @@ function formatTime(date_string) {
   return result
 }
 
-const DisplayDaysNotes = () => {
+const DisplayDaysNotes = (props) => {
   const toastRef = useRef()
-
   const notesQuery = useNotes()
   const noteDatesQuery = useNoteDates()
   const deleteMutation = useDeleteNote(toastRef)
-  const [date, setDate] = useState(new Date())
+
+  //let initDate = props.date
+
+  let initDate = new Date()
+
+  const offset = initDate.getTimezoneOffset()
+  let initLocalDate = new Date(initDate.getTime() - offset * 60 * 1000)
+  //console.log(initLocalDate)
+  if (props.date != undefined) {
+    // Having some issues with the calendar control displaying the day prior to
+    // the props date instead of the props date.
+    // I think it is a timezone issue.  This seems to fix it for me anyway.
+    initLocalDate = new Date(
+      new Date(props.date).getTime() + offset * 60 * 1000
+    )
+  }
+
+  const [journalDate, setJournalDate] = useState(initLocalDate)
+  //const [date, setDate] = useState(initDate)
 
   const handlePrev = () => {
     //console.log("howdy")
-    let prevDay = new Date(date)
+    let prevDay = new Date(journalDate)
     prevDay.setDate(prevDay.getDate() - 1)
-    setDate(prevDay)
+    setJournalDate(prevDay)
   }
 
   const handleNext = () => {
     //console.log("howdy")
-    let nextDay = new Date(date)
+    let nextDay = new Date(journalDate)
     nextDay.setDate(nextDay.getDate() + 1)
-    setDate(nextDay)
+    setJournalDate(nextDay)
   }
 
   const handleDateChange = (e) => {
     //console.log("handleDateChange")
-    setDate(e.value)
+    console.log(e.value.toISOString().slice(0, 10))
+    setJournalDate(e.value)
+    //let note_date = e.value.slice(0, 10) // yyyy-mm-dd
+    //console.log(note_date)
+    //navigate(`/mynotes/${note_date}`) // TODO: display toast message after navigating
   }
 
   if (notesQuery.isLoading || noteDatesQuery.isLoading)
@@ -68,16 +89,10 @@ const DisplayDaysNotes = () => {
 
   const data = notesQuery.data
 
-  // pass in a date_string if we want a different day
   // working with dates is such a joy
+  let day_to_filter = journalDate.toISOString().split("T")[0]
 
-  const offset = date.getTimezoneOffset()
-  let day_to_filter = new Date(date.getTime() - offset * 60 * 1000)
-  day_to_filter = day_to_filter.toISOString().split("T")[0]
-
-  //const day_to_filter = date.toISOString().slice(0, 10) // yyyy-mm-dd
-
-  let next_day = new Date(date) //CHECK THIS
+  let next_day = new Date(journalDate) // CHECK THIS
   next_day.setDate(next_day.getDate() + 1)
   next_day = next_day.toISOString().slice(0, 10) // yyyy-mm-dd
 
@@ -88,8 +103,9 @@ const DisplayDaysNotes = () => {
   })
   days_data.reverse()
 
-  console.log("render DisplayDaysNotes")
-  console.log(day_to_filter)
+  //console.log("Filter On")
+  //console.log(day_to_filter)
+
   //console.log(date.toISOString())
 
   return (
@@ -103,7 +119,7 @@ const DisplayDaysNotes = () => {
             ></span>
             &nbsp;&nbsp;
             <Calendar
-              value={date}
+              value={journalDate}
               onChange={handleDateChange}
               showIcon
               dateTemplate={dateTemplate}

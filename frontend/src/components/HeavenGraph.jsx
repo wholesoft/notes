@@ -93,7 +93,7 @@ const HeavenGraph = () => {
   if (dataQuery.isError) {
     return <pre>{JSON.stringify(dataQuery.error)}</pre>
   }
-  console.log(rowData)
+  //console.log(rowData)
 
   // Format query data for use in line chart
   let ratings = []
@@ -111,8 +111,8 @@ const HeavenGraph = () => {
     }
     ratings.push(thisRating)
   })
-  console.log(n)
-  console.log(ratings)
+  // console.log(n)
+  //console.log(ratings)
   const average_rating = Math.round(average(ratings))
 
   const options = {
