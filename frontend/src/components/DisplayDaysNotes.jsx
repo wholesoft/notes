@@ -4,6 +4,7 @@ import { useNotes, useDeleteNote, useNoteDates } from "../data/notes/useNotes"
 import { Calendar } from "primereact/calendar"
 import { Toast } from "primereact/toast"
 import { Card } from "primereact/card"
+import { useNavigate } from "react-router-dom"
 
 function formatTime(date_string) {
   // Should output in this format:
@@ -22,6 +23,7 @@ function formatTime(date_string) {
 }
 
 const DisplayDaysNotes = (props) => {
+  const navigate = useNavigate()
   const toastRef = useRef()
   const notesQuery = useNotes()
   const noteDatesQuery = useNoteDates()
@@ -62,11 +64,13 @@ const DisplayDaysNotes = (props) => {
 
   const handleDateChange = (e) => {
     //console.log("handleDateChange")
-    console.log(e.value.toISOString().slice(0, 10))
+    console.log(e.value)
+    //setJournalDate(e.value)
+    // i probably need to deal with the timezone offset first
+    let note_date = e.value.toISOString().slice(0, 10) // yyyy-mm-dd
+    console.log(note_date)
     setJournalDate(e.value)
-    //let note_date = e.value.slice(0, 10) // yyyy-mm-dd
-    //console.log(note_date)
-    //navigate(`/mynotes/${note_date}`) // TODO: display toast message after navigating
+    navigate(`/mynotes/${note_date}`)
   }
 
   if (notesQuery.isLoading || noteDatesQuery.isLoading)
