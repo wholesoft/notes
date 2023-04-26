@@ -4,7 +4,7 @@ const About = () => {
   return (
     <>
       {tabTitle("Wholesoft Notes")}
-      <p>A simple and free app to take notes.</p>
+      <p>A simple app to take notes in daily journal.</p>
     </>
   )
 }

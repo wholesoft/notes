@@ -12,7 +12,7 @@ const TodaysNotes = () => {
         <Link to="/add_note">
           <i
             className="pi pi-plus-circle p-2 text-blue-600"
-            style={{ fontSize: "3.0rem" }}
+            style={{ fontSize: "2.5rem" }}
           ></i>
         </Link>{" "}
         <Link
