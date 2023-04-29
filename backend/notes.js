@@ -230,17 +230,19 @@ export async function getNotes(props) {
   }
   const [rows] = await pool.query(
     `
-      SELECT id, note, title, description, created, updated, rating,
-      DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone
-      FROM Notes
+      SELECT a.id, a.note, a.title, a.description, a.created, a.updated, a.rating,
+      DATE_FORMAT(a.created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, a.user_timezone,
+      JSON_ARRAYAGG(c.tag) as tags
+      FROM Notes a
+      LEFT JOIN NoteTags b ON a.id=b.note_id
+      LEFT JOIN Tags c ON b.tag_id=c.id
       WHERE user_id=?
-      ORDER BY id DESC
+      GROUP BY a.id, a.note, a.title, a.description, a.created, a.updated, a.rating, created_usertime, a.user_timezone
       `,
     [props.user_id]
   )
 
-  let tags = await getUserNoteTags({ user_id: props.user_id })
-  console.log(tags)
+  console.log(rows)
   return { success: true, message: "OK", data: rows }
 }
 
@@ -400,11 +402,12 @@ export async function getUserNoteTags(props) {
   }
   const [rows] = await pool.query(
     `
-      SELECT b.note_id, b.tag_id, c.tag
+      SELECT b.note_id, JSON_ARRAYAGG(c.tag) as tags
       FROM Notes a 
       LEFT JOIN NoteTags b ON a.id = b.note_id
       LEFT JOIN Tags c ON b.tag_id=c.id
-      WHERE a.user_id=? AND b.note_id IS NOT NULL
+      WHERE a.user_id=? AND b.note_id IS NOT NULL 
+      GROUP BY b.note_id
       `,
     [props.user_id]
   )
@@ -412,14 +415,7 @@ export async function getUserNoteTags(props) {
     return { success: false, message: "Error, Note Not Found.", data: [] }
   }
 
-  let tags = []
-  rows.map((row) => {
-    tags.push({ note_id: row.note_id, tag_id: row.tag_id, tag: row.tag })
-  })
-
-  console.log(tags)
-
-  return { success: true, message: "OK", data: tags }
+  return { success: true, message: "OK", data: rows }
 }
 
 /*
@@ -438,3 +434,10 @@ Notes
 | user_timezone    | varchar(255) | YES  |     | NULL              |                   |
 +------------------+--------------+------+-----+-------------------+-------------------+
 */
+
+function test() {
+  console.log("TEST FUNCTION")
+  getNotes({ user_id: 45 })
+}
+
+//test()

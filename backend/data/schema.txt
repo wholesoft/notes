@@ -10,8 +10,7 @@ CREATE TABLE `Notes` (
   `user_timezone` VARCHAR(255),
   `rating` INT,
   PRIMARY KEY (`id`)
-)
-
+);
 
 CREATE TABLE `AppLog` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -22,18 +21,17 @@ CREATE TABLE `AppLog` (
   `misc` text,
   `created` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-)
-
+);
 
 CREATE TABLE `Tags` (
   `id` int NOT NULL AUTO_INCREMENT,
   `tag` VARCHAR(255), 
   PRIMARY KEY (`id`)
-)
+);
 
 CREATE TABLE `NoteTags` (
   `tag_id` int NOT NULL,
   `note_id` int NOT NULL, 
   PRIMARY KEY (`tag_id`, `note_id`)
-)
+);
 

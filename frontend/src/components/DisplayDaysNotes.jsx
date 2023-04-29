@@ -142,12 +142,22 @@ const DisplayDaysNotes = (props) => {
             style={{ position: "relative" }}
           >
             {days_data.map((row) => {
+              console.log(row.tags)
+              console.log(typeof row.tags)
+              console.log(Array.isArray(row.tags))
               return (
                 <div key={row.id} style={{ position: "relative" }}>
                   <div>
                     <b>{formatTime(row.created)}</b>
                   </div>
-                  <div className="text-xs">Rating: {row.rating}</div>
+                  <div className="text-xs">
+                    <span style={{ width: "80px", display: "inline-block" }}>
+                      Rating: {row.rating}
+                    </span>
+                    <span className="text-blue-500">
+                      {row.tags.sort().join(", ")}
+                    </span>
+                  </div>
                   <div className="mt-2 mb-6" style={{ whiteSpace: "pre-wrap" }}>
                     {row.note}
                   </div>
