@@ -33,6 +33,7 @@ function get_local_timezone() {
 
 const AddEditNoteForm = (props) => {
   const toastRef = useRef()
+
   const addMutation = useAddNote(toastRef)
   const editMutation = useEditNote(toastRef)
   const deleteMutation = useDeleteNote(toastRef)
@@ -44,8 +45,12 @@ const AddEditNoteForm = (props) => {
 
   let note = ""
   let rating = 0
-  //console.log(props)
-  if (props.data != undefined) {
+  let note_tags = []
+
+  console.log(props.data)
+  console.log(props.data.length)
+  if (props.data != undefined && props.data.id > 0) {
+    console.log("INIT DATA FROM PROPS")
     id = props.data.id
     note = props.data.note
     rating = props.data.rating
@@ -53,6 +58,7 @@ const AddEditNoteForm = (props) => {
     if (rating == null) {
       rating = 0
     }
+    note_tags = props.data.tags
   }
 
   let cardTitle = "Add Note"
@@ -63,6 +69,7 @@ const AddEditNoteForm = (props) => {
   const [form, setForm] = useState({
     note: note,
     rating: rating,
+    tags: note_tags,
   })
 
   //console.log(`Note value is now: ${note}`)
@@ -73,6 +80,14 @@ const AddEditNoteForm = (props) => {
       ...form,
       [event.target.id]: event.target.value,
     })
+  }
+
+  const onTagChange = (e) => {
+    let selectedTags = [...form.tags]
+    if (e.checked) selectedTags.push(e.value)
+    else selectedTags.splice(selectedTags.indexOf(e.value), 1)
+    console.log(selectedTags)
+    setForm({ ...form, tags: selectedTags })
   }
 
   const handleRatingChange = (new_rating) => {
@@ -86,23 +101,24 @@ const AddEditNoteForm = (props) => {
     e.preventDefault()
     e.stopPropagation()
     let response = ""
-    const { note, rating } = form
+    const { note, rating, tags } = form
     if (id > 0) {
       if (deleteCheck) {
         deleteMutation.mutate(id)
       } else {
-        editMutation.mutate({ note_id: id, note, rating })
+        editMutation.mutate({ note_id: id, note, rating, tags })
       }
     } else {
       const local_time = get_local_mysql_datetime()
       const timezone = get_local_timezone()
-      addMutation.mutate({ note, local_time, timezone, rating })
+      addMutation.mutate({ note, local_time, timezone, rating, tags })
     }
     //setForm({ group: "", notes: "" })
   }
 
   return (
     <>
+      <p>{JSON.stringify(form)}</p>
       <Card title={cardTitle} className="col-12 md:col-6">
         <form onSubmit={handleSubmit}>
           <div className="p-fluid">
@@ -136,6 +152,22 @@ const AddEditNoteForm = (props) => {
               <label htmlFor="rating">Rating</label>
             </span>
           </div>
+
+          {props.tags.map((row) => (
+            <div className="col-12" key={row.id}>
+              <Checkbox
+                id="tags"
+                inputId={`cb${row.id}`}
+                value={row.id}
+                onChange={(e) => onTagChange(e)}
+                checked={form.tags.includes(row.id)}
+              ></Checkbox>
+
+              <label htmlFor={`cb${row.id}`} className="p-checkbox-label">
+                {row.tag}
+              </label>
+            </div>
+          ))}
 
           <Button className="mt-3" icon="pi pi-check" label="Save" />
         </form>

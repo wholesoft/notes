@@ -11,6 +11,7 @@ import {
   updateNote,
   deleteNote,
   getNoteDates,
+  getAllTags,
 } from "./notes.js"
 
 import { getUserActivity } from "./applog.js"
@@ -293,22 +294,31 @@ app.get("/userlog", async (req, res) => {
 /* NOTES API */
 app.post("/add_note", async (req, res) => {
   console.log("POST: add_note")
-  const { note, local_time, timezone, rating } = req.body
+  const { note, local_time, timezone, rating, tags } = req.body
   const user_id = req.jwt_user_id
-  const result = await addNote({ user_id, note, local_time, timezone, rating })
+  const result = await addNote({
+    user_id,
+    note,
+    local_time,
+    timezone,
+    rating,
+    tags,
+  })
   res.send(result)
 })
 
 app.post("/edit_note", async (req, res) => {
   console.log("POST: edit_note")
-  const { note_id, note, rating } = req.body
+  const { note_id, note, rating, tags } = req.body
+  console.log("TAGS")
+  console.log(req.body)
   const user_id = req.jwt_user_id
-  const result = await updateNote({ user_id, note_id, note, rating })
+  const result = await updateNote({ user_id, note_id, note, rating, tags })
   res.send(result)
 })
 
 app.post("/delete_note", async (req, res) => {
-  console.log("GET: /delete_note")
+  console.log("POST: /delete_note")
   const { note_id } = req.body
   const user_id = req.jwt_user_id
   const result = await deleteNote({ user_id, note_id })
@@ -334,6 +344,12 @@ app.get("/note_dates", async (req, res) => {
   console.log("GET: /notes")
   const user_id = req.jwt_user_id
   const result = await getNoteDates({ user_id })
+  res.send(result)
+})
+
+app.get("/tags", async (req, res) => {
+  console.log("GET: /tags")
+  const result = await getAllTags()
   res.send(result)
 })
 

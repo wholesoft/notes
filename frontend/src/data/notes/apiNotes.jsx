@@ -44,4 +44,18 @@ const editNote = async (data) => {
   return response
 }
 
-export { getNotes, getNote, deleteNote, addNote, editNote, getNoteDates }
+const getTags = async () => {
+  const url = `/tags`
+  const response = await axiosAuth.get(url)
+  return response.data.data
+}
+
+export {
+  getNotes,
+  getNote,
+  deleteNote,
+  addNote,
+  editNote,
+  getNoteDates,
+  getTags,
+}

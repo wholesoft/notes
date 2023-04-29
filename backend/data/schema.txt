@@ -23,3 +23,17 @@ CREATE TABLE `AppLog` (
   `created` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 )
+
+
+CREATE TABLE `Tags` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tag` VARCHAR(255), 
+  PRIMARY KEY (`id`)
+)
+
+CREATE TABLE `NoteTags` (
+  `tag_id` int NOT NULL,
+  `note_id` int NOT NULL, 
+  PRIMARY KEY (`tag_id`, `note_id`)
+)
+

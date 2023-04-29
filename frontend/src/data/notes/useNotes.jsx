@@ -7,6 +7,7 @@ import {
   addNote,
   editNote,
   getNoteDates,
+  getTags,
 } from "./apiNotes"
 
 /* GROUPS */
@@ -118,14 +119,23 @@ const useEditNote = (toastRef) => {
       // need to set the date to whatever the edit does is
       let note_date = props.data.note.created_usertime.slice(0, 10) // yyyy-mm-dd
       //console.log(note_date)
+      queryClient.invalidateQueries(["notes"])
       navigate(`/mynotes/${note_date}`) // TODO: display toast message after navigating
-      return queryClient.invalidateQueries(["groups"])
     },
     onError: (props) => {
+      console.log(props)
       console.log("mutate error")
     },
   })
   return editMutation
+}
+
+const useTags = () => {
+  const selectQuery = useQuery({
+    queryKey: ["tags"],
+    queryFn: () => getTags(),
+  })
+  return selectQuery
 }
 
 export {
@@ -135,4 +145,5 @@ export {
   useDeleteNote,
   useAddNote,
   useNoteDates,
+  useTags,
 }
