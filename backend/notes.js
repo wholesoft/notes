@@ -238,6 +238,7 @@ export async function getNotes(props) {
       LEFT JOIN Tags c ON b.tag_id=c.id
       WHERE user_id=?
       GROUP BY a.id, a.note, a.title, a.description, a.created, a.updated, a.rating, created_usertime, a.user_timezone
+      ORDER BY a.id
       `,
     [props.user_id]
   )
@@ -440,4 +441,4 @@ function test() {
   getNotes({ user_id: 45 })
 }
 
-//test()
+test()
