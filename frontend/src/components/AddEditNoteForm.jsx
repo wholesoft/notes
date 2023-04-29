@@ -118,7 +118,6 @@ const AddEditNoteForm = (props) => {
 
   return (
     <>
-      <p>{JSON.stringify(form)}</p>
       <Card title={cardTitle} className="col-12 md:col-6">
         <form onSubmit={handleSubmit}>
           <div className="p-fluid">
@@ -153,22 +152,26 @@ const AddEditNoteForm = (props) => {
             </span>
           </div>
 
-          {props.tags.map((row) => (
-            <div className="col-12" key={row.id}>
-              <Checkbox
-                id="tags"
-                inputId={`cb${row.id}`}
-                value={row.id}
-                onChange={(e) => onTagChange(e)}
-                checked={form.tags.includes(row.id)}
-              ></Checkbox>
+          <div className="grid mt-4">
+            {props.tags.map((row) => (
+              <div className="col-6" key={row.id}>
+                <Checkbox
+                  id="tags"
+                  inputId={`cb${row.id}`}
+                  value={row.id}
+                  onChange={(e) => onTagChange(e)}
+                  checked={form.tags.includes(row.id)}
+                ></Checkbox>
 
-              <label htmlFor={`cb${row.id}`} className="p-checkbox-label">
-                {row.tag}
-              </label>
-            </div>
-          ))}
-
+                <label
+                  htmlFor={`cb${row.id}`}
+                  className="p-checkbox-label ml-2"
+                >
+                  {row.tag}
+                </label>
+              </div>
+            ))}
+          </div>
           <Button className="mt-3" icon="pi pi-check" label="Save" />
         </form>
       </Card>

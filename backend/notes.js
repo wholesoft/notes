@@ -239,6 +239,8 @@ export async function getNotes(props) {
     [props.user_id]
   )
 
+  let tags = await getUserNoteTags({ user_id: props.user_id })
+  console.log(tags)
   return { success: true, message: "OK", data: rows }
 }
 
@@ -369,6 +371,50 @@ export async function getNoteTags(props) {
   let tags = []
   rows.map((row) => {
     tags.push(row.tag_id)
+  })
+
+  console.log(tags)
+
+  return { success: true, message: "OK", data: tags }
+}
+
+export async function getUserNoteTags(props) {
+  // Returns { 'success': true/false , 'message': '', 'data': [] }
+  let success = false
+  let message = ""
+  let validation_okay = true
+
+  // VALIDATE INPUT
+  const schema = joi.object({
+    user_id: joi.number().integer().required(),
+  })
+
+  const { error, value } = schema.validate(props)
+  if (error) {
+    console.log(error)
+    console.log("Validation Error.")
+    message = "Vaidation Error (" + error.details[0].message + ")"
+    //console.log(message)
+    validation_okay = false
+    return { success: false, message: message, data: [] }
+  }
+  const [rows] = await pool.query(
+    `
+      SELECT b.note_id, b.tag_id, c.tag
+      FROM Notes a 
+      LEFT JOIN NoteTags b ON a.id = b.note_id
+      LEFT JOIN Tags c ON b.tag_id=c.id
+      WHERE a.user_id=? AND b.note_id IS NOT NULL
+      `,
+    [props.user_id]
+  )
+  if (rows.length == 0) {
+    return { success: false, message: "Error, Note Not Found.", data: [] }
+  }
+
+  let tags = []
+  rows.map((row) => {
+    tags.push({ note_id: row.note_id, tag_id: row.tag_id, tag: row.tag })
   })
 
   console.log(tags)
