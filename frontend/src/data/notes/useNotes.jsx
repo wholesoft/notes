@@ -134,6 +134,10 @@ const useTags = () => {
   const selectQuery = useQuery({
     queryKey: ["tags"],
     queryFn: () => getTags(),
+    refetchOnReconnect: false,
+    retry: false,
+    retryOnMount: false,
+    refetchOnWindowFocus: false,
   })
   return selectQuery
 }
