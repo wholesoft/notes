@@ -137,6 +137,7 @@ const HeavenGraph = (props) => {
     //console.log(rating_dates[0])
     rating_dates.push(rating_dates[0])
     zero_line.push(0)
+    ratings.push(ratings[0])
   }
 
   const chart_data = {
