@@ -90,14 +90,16 @@ const EightChart = (props) => {
   myData.map((row) => {
     all_dates.push(row.created_usertime)
     row.tags.map((tag) => {
-      totalTags += 1
-      if (!tagNames.includes(tag)) {
-        tagNames.push(tag)
-      }
-      if (tag_counts[tag] == null) {
-        tag_counts[tag] = 1
-      } else {
-        tag_counts[tag] += 1
+      if (tag != null) {
+        totalTags += 1
+        if (!tagNames.includes(tag)) {
+          tagNames.push(tag)
+        }
+        if (tag_counts[tag] == null) {
+          tag_counts[tag] = 1
+        } else {
+          tag_counts[tag] += 1
+        }
       }
     })
 
