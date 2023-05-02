@@ -16,7 +16,6 @@ import { Layout } from "./components/Layout"
 import { Unauthorized } from "./pages/Unauthorized"
 import { About } from "./pages/About"
 import { Logout } from "./pages/Logout"
-import { MyNotes } from "./pages/MyNotes"
 import { TodaysNotes } from "./pages/TodaysNotes"
 import { AddEditNote } from "./pages/AddEditNote"
 
@@ -49,7 +48,6 @@ function App() {
           {/* we want to protect these routes */}
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-              <Route path="/allnotes" element={<MyNotes />} />
               <Route path="/mynotes" element={<TodaysNotes />} />
               <Route path="/mynotes/:date" element={<TodaysNotes />} />
               <Route path="/add_note" element={<AddEditNote />} />

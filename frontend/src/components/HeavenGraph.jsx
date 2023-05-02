@@ -4,7 +4,6 @@ import { useNotes } from "../data/notes/useNotes"
 
 import { FilterMatchMode, PrimeIcons } from "primereact/api"
 import { Toast } from "primereact/toast"
-import { Button } from "primereact/button"
 
 import {
   Chart as ChartJS,
@@ -64,9 +63,7 @@ function local_today() {
   return datestring
 }
 
-const HeavenGraph = () => {
-  const [dateFilter, setDateFilter] = useState("Today")
-
+const HeavenGraph = (props) => {
   const dataQuery = useNotes()
 
   const rowData = dataQuery.data
@@ -81,6 +78,7 @@ const HeavenGraph = () => {
   let ratings = []
   let n = []
   let rating_dates = []
+  let zero_line = []
   let i = 0
 
   let today = local_today() // new Date().toJSON().slice(0, 10)
@@ -88,39 +86,35 @@ const HeavenGraph = () => {
 
   let myData = cloneJSON(rowData).reverse()
 
-  if (dateFilter == "Today") {
+  if (props.dateFilter == "Today") {
     myData = myData.filter((data) => {
       return data.created_usertime >= today
     })
-  } else if (dateFilter == "This Month") {
+  } else if (props.dateFilter == "This Month") {
     myData = myData.filter((data) => {
       return data.created_usertime >= this_month
     })
   }
 
-  // We can filter this data to just the time range we are interested in
-
-  //console.log(myData)
-
   myData.map((row) => {
     i += 1
     n.push(String(i))
-    //console.log(typeof row.created_usertime)
+
     rating_dates.push(row.created_usertime)
     let thisRating = row.rating
     if (thisRating == null) {
       thisRating = 0
     }
     ratings.push(thisRating)
+    zero_line.push(0)
   })
-  // console.log(n)
-  //console.log(ratings)
+
   const average_rating = Math.round(average(ratings))
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    aspectRatio: 2,
+    aspectRatio: 1,
     plugins: {
       legend: {
         display: false,
@@ -130,6 +124,19 @@ const HeavenGraph = () => {
         text: `Heaven/Hell Chart | Average: ${average_rating}`,
       },
     },
+    scales: {
+      y: {
+        min: -100,
+        max: 100,
+      },
+    },
+  }
+
+  // ENSURE ZERO LINE IS DRAWN EVEN IF THERE IS JUST ONE DATE
+  if (rating_dates.length == 1) {
+    //console.log(rating_dates[0])
+    rating_dates.push(rating_dates[0])
+    zero_line.push(0)
   }
 
   const chart_data = {
@@ -139,31 +146,23 @@ const HeavenGraph = () => {
         data: ratings,
         borderColor: "rgb(12, 99, 255)",
       },
+      {
+        data: zero_line,
+        borderColor: "rgb(0, 0, 0)",
+      },
     ],
   }
 
   return (
     <>
-      {" "}
-      <div className="flex justify-content-center">
-        <Button
-          label="Today"
-          onClick={() => {
-            setDateFilter("Today")
-          }}
-        />
-        &nbsp;&nbsp;
-        <Button
-          label="This Month"
-          onClick={() => {
-            setDateFilter("This Month")
-          }}
-        />
-        {/*         &nbsp;&nbsp;{dateFilter}&nbsp;&nbsp;{today}&nbsp;&nbsp;{this_month} */}
-      </div>
       <div
         className="p-3"
-        style={{ position: "relative", height: "auto", width: "90vw" }}
+        style={{
+          position: "relative",
+          height: "250px",
+          width: "90vw",
+          margin: "auto",
+        }}
       >
         <Line options={options} data={chart_data} />
       </div>

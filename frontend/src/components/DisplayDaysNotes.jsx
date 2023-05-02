@@ -115,7 +115,23 @@ const DisplayDaysNotes = (props) => {
   return (
     <>
       <div className="grid">
-        <div className="col-12 lg:col-8">
+        <div className="col-12 lg:col-8" style={{ margin: "auto" }}>
+          <div className="flex align-items-center text-blue-600">
+            <Link to="/add_note">
+              <i
+                className="pi pi-plus-circle p-2 text-blue-600"
+                style={{ fontSize: "2.5rem" }}
+              ></i>
+            </Link>{" "}
+            <Link
+              to="/add_note"
+              className="text-blue-600"
+              style={{ textDecoration: "none" }}
+            >
+              <span>New Note</span>
+            </Link>
+          </div>
+
           <div style={{ textAlign: "center" }} className="pb-2">
             <span
               className="pi pi-arrow-left text-sm"
@@ -142,9 +158,9 @@ const DisplayDaysNotes = (props) => {
             style={{ position: "relative" }}
           >
             {days_data.map((row) => {
-              console.log(row.tags)
-              console.log(typeof row.tags)
-              console.log(Array.isArray(row.tags))
+              //console.log(row.tags)
+              //console.log(typeof row.tags)
+              //console.log(Array.isArray(row.tags))
               return (
                 <div key={row.id} style={{ position: "relative" }}>
                   <div>
@@ -172,7 +188,7 @@ const DisplayDaysNotes = (props) => {
                       <span className="pi pi-pencil"></span>
                     </Link>
                     <span
-                      className="pi pi-trash ml-2"
+                      className="pi pi-trash ml-2 cursor-pointer"
                       onClick={(e) => {
                         deleteMutation.mutate(row.id)
                       }}

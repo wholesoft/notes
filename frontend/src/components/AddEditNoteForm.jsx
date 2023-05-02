@@ -118,7 +118,11 @@ const AddEditNoteForm = (props) => {
 
   return (
     <>
-      <Card title={cardTitle} className="col-12 md:col-6">
+      <Card
+        title={cardTitle}
+        className="col-12 md:col-6"
+        style={{ margin: "auto" }}
+      >
         <form onSubmit={handleSubmit}>
           <div className="p-fluid">
             <span className="p-float-label mt-0">
