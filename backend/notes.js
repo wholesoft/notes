@@ -30,8 +30,8 @@ export async function addNote(props) {
     timezone: joi.string().allow(""),
     rating: joi.number().integer().allow(null),
     eatingHabits: joi.number().integer().allow(null),
-    slepttime: joi.string().allow(""),
-    woketime: joi.string().allow(""),
+    slepttime: joi.string().allow("").allow(null),
+    woketime: joi.string().allow("").allow(null),
     spent: joi.number().allow(null),
     tags: joi.array().items(joi.number()),
   })
@@ -106,8 +106,8 @@ export async function updateNote(props) {
     note: joi.string().required(),
     rating: joi.number().integer().allow(null),
     eatingHabits: joi.number().integer().allow(null),
-    slepttime: joi.string().allow(""),
-    woketime: joi.string().allow(""),
+    slepttime: joi.string().allow("").allow(null),
+    woketime: joi.string().allow("").allow(null),
     spent: joi.number().allow(null),
     tags: joi.array().items(joi.number()),
   })
