@@ -164,3 +164,40 @@ body {
   cursor: pointer;
   text-decoration: none;
 }
+
+/* Prime React Slider */
+.yellowSlider .p-slider-range {
+  border: 2px solid Yellow;
+}
+
+.yellowSlider .p-slider-handle {
+  border: 2px solid Yellow;
+}
+
+.yellowSlider .p-slider-handle:hover {
+  background: Yellow !important;
+  border-color: Yellow !important;
+}
+
+.yellowSlider .p-slider-handle:focus {
+  /* box-shadow: 0 0 0 0.2rem #C7D2FE; */
+  box-shadow: 0 0 0 0.2rem #ddea1d7b;
+}
+
+.goldSlider .p-slider-range {
+  border: 2px solid #b8860b;
+}
+
+.goldSlider .p-slider-handle {
+  border: 2px solid #b8860b;
+}
+
+.goldSlider .p-slider-handle:hover {
+  background: #b8860b !important;
+  border-color: #b8860b !important;
+}
+
+.goldSlider .p-slider-handle:focus {
+  /* box-shadow: 0 0 0 0.2rem #C7D2FE; */
+  box-shadow: 0 0 0 0.2rem #daa52085;
+}

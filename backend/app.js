@@ -294,7 +294,17 @@ app.get("/userlog", async (req, res) => {
 /* NOTES API */
 app.post("/add_note", async (req, res) => {
   console.log("POST: add_note")
-  const { note, local_time, timezone, rating, tags } = req.body
+  const {
+    note,
+    local_time,
+    timezone,
+    rating,
+    eatingHabits,
+    slepttime,
+    woketime,
+    spent,
+    tags,
+  } = req.body
   const user_id = req.jwt_user_id
   const result = await addNote({
     user_id,
@@ -302,6 +312,10 @@ app.post("/add_note", async (req, res) => {
     local_time,
     timezone,
     rating,
+    eatingHabits,
+    slepttime,
+    woketime,
+    spent,
     tags,
   })
   res.send(result)
@@ -309,11 +323,30 @@ app.post("/add_note", async (req, res) => {
 
 app.post("/edit_note", async (req, res) => {
   console.log("POST: edit_note")
-  const { note_id, note, rating, tags } = req.body
+  const {
+    note_id,
+    note,
+    rating,
+    eatingHabits,
+    slepttime,
+    woketime,
+    spent,
+    tags,
+  } = req.body
   console.log("TAGS")
   console.log(req.body)
   const user_id = req.jwt_user_id
-  const result = await updateNote({ user_id, note_id, note, rating, tags })
+  const result = await updateNote({
+    user_id,
+    note_id,
+    note,
+    rating,
+    eatingHabits,
+    slepttime,
+    woketime,
+    spent,
+    tags,
+  })
   res.send(result)
 })
 

@@ -29,6 +29,10 @@ export async function addNote(props) {
     local_time: joi.string().required(),
     timezone: joi.string().allow(""),
     rating: joi.number().integer().allow(null),
+    eatingHabits: joi.number().integer().allow(null),
+    slepttime: joi.string().allow(""),
+    woketime: joi.string().allow(""),
+    spent: joi.number().allow(null),
     tags: joi.array().items(joi.number()),
   })
 
@@ -45,10 +49,11 @@ export async function addNote(props) {
   // TODO: turn this into a transaction
   let note_id = 0
   if (validation_okay) {
+    console.log(props)
     const result = await pool.query(
       `
-         INSERT INTO Notes (user_id, note, created, updated, created_usertime, user_timezone, rating) 
-         VALUES (?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,?,?,?)
+         INSERT INTO Notes (user_id, note, created, updated, created_usertime, user_timezone, rating, slepttime, woketime, eating_habits, spent) 
+         VALUES (?,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,?,?,?,?,?,?,?)
          `,
       [
         props.user_id,
@@ -56,6 +61,10 @@ export async function addNote(props) {
         props.local_time,
         props.timezone,
         props.rating,
+        props.slepttime,
+        props.woketime,
+        props.eatingHabits,
+        props.spent,
       ]
     )
     success = true
@@ -96,6 +105,10 @@ export async function updateNote(props) {
     note_id: joi.number().integer().required(),
     note: joi.string().required(),
     rating: joi.number().integer().allow(null),
+    eatingHabits: joi.number().integer().allow(null),
+    slepttime: joi.string().allow(""),
+    woketime: joi.string().allow(""),
+    spent: joi.number().allow(null),
     tags: joi.array().items(joi.number()),
   })
 
@@ -115,10 +128,19 @@ export async function updateNote(props) {
   if (validation_okay) {
     const result = await pool.query(
       `
-         UPDATE Notes SET note=?, updated=CURRENT_TIMESTAMP, rating=?
+         UPDATE Notes SET note=?, updated=CURRENT_TIMESTAMP, rating=?, eating_habits=?, slepttime=?, woketime=?, spent=?
          WHERE id=? AND user_id=?
          `,
-      [props.note, props.rating, props.note_id, props.user_id]
+      [
+        props.note,
+        props.rating,
+        props.eatingHabits,
+        props.slepttime,
+        props.woketime,
+        props.spent,
+        props.note_id,
+        props.user_id,
+      ]
     )
     if (result[0].changedRows > 0) {
       console.log(typeof result[0])
@@ -232,18 +254,20 @@ export async function getNotes(props) {
     `
       SELECT a.id, a.note, a.title, a.description, a.created, a.updated, a.rating,
       DATE_FORMAT(a.created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, a.user_timezone,
+      a.eating_habits, a.slepttime, a.woketime, a.spent,
       JSON_ARRAYAGG(c.tag) as tags
       FROM Notes a
       LEFT JOIN NoteTags b ON a.id=b.note_id
       LEFT JOIN Tags c ON b.tag_id=c.id
       WHERE user_id=?
-      GROUP BY a.id, a.note, a.title, a.description, a.created, a.updated, a.rating, created_usertime, a.user_timezone
+      GROUP BY a.id, a.note, a.title, a.description, a.created, a.updated, a.rating, 
+      a.eating_habits, a.slepttime, a.woketime, a.spent, created_usertime, a.user_timezone
       ORDER BY a.id DESC
       `,
     [props.user_id]
   )
 
-  console.log(rows)
+  //console.log(rows)
   return { success: true, message: "OK", data: rows }
 }
 
@@ -310,8 +334,9 @@ export async function getNote(props) {
   const [rows] = await pool.query(
     `
       SELECT id, note, title, description, created, updated, rating,
-      DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone
-      FROM Notes WHERE user_id=? AND id=?
+      DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone,
+      a.eating_habits, a.slepttime, a.woketime, a.spent
+      FROM Notes a WHERE user_id=? AND id=?
       `,
     [props.user_id, props.note_id]
   )
@@ -322,7 +347,7 @@ export async function getNote(props) {
   const tags = await getNoteTags({ note_id: props.note_id })
   let note = { ...rows[0], tags: tags.data }
 
-  console.log(note)
+  //console.log(note)
 
   return { success: true, message: "OK", data: note }
 }
