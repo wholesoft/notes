@@ -154,7 +154,7 @@ const HeavenGraph = (props) => {
     ],
   }
 
-  return (
+  return myData.length > 0 ? (
     <>
       <div
         className="p-3"
@@ -168,6 +168,8 @@ const HeavenGraph = (props) => {
         <Line options={options} data={chart_data} />
       </div>
     </>
+  ) : (
+    <></>
   )
 }
 

@@ -22,6 +22,27 @@ function formatTime(date_string) {
   return result
 }
 
+function displaySnoozed(row) {
+  var result
+  let hours = 0
+  let minutes = 0
+  if (row.snoozed?.length > 4 && row.snoozed != "00:00:00") {
+    let time1 = row.slepttime.slice(0, 5).split(":")
+    let time2 = row.woketime.slice(0, 5).split(":")
+    time1 = Number(time1[0]) + Number(time1[1]) / 60
+    time2 = Number(time2[0]) + Number(time2[1]) / 60
+    if (time2 > time1) {
+      result = time2 - time1
+    } else {
+      result = time2 + (24 - time1)
+    }
+    let hours = Math.floor(result)
+    let minutes = Math.round((result - hours) * 60.0)
+    result = `${hours} h ${minutes} m`
+  }
+  return result
+}
+
 const DisplayDaysNotes = (props) => {
   const navigate = useNavigate()
   const toastRef = useRef()
@@ -158,7 +179,7 @@ const DisplayDaysNotes = (props) => {
             style={{ position: "relative" }}
           >
             {days_data.map((row) => {
-              //console.log(row.tags)
+              console.log(row)
               //console.log(typeof row.tags)
               //console.log(Array.isArray(row.tags))
               return (
@@ -170,6 +191,36 @@ const DisplayDaysNotes = (props) => {
                     <span style={{ width: "80px", display: "inline-block" }}>
                       Rating: {row.rating}
                     </span>
+
+                    <span
+                      style={{
+                        color: "purple",
+                        width: "100px",
+                        display: "inline-block",
+                      }}
+                    >
+                      {displaySnoozed(row)}
+                    </span>
+
+                    <span
+                      className="gold"
+                      style={{ width: "80px", display: "inline-block" }}
+                    >
+                      {row.eating_habits != 0 && row.eating_habits != null
+                        ? `Nutrition: ${row.eating_habits}`
+                        : ` `}
+                    </span>
+                    <span
+                      style={{
+                        color: "green",
+                        width: "60px",
+                        display: "inline-block",
+                        textAlign: "right",
+                      }}
+                    >
+                      {row.spent > 0 ? `$${row.spent}` : ` `}
+                    </span>
+
                     <span className="text-blue-500">
                       {row.tags.sort().join(", ")}
                     </span>

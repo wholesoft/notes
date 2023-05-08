@@ -9,6 +9,10 @@ CREATE TABLE `Notes` (
   `created_usertime` DATETIME,
   `user_timezone` VARCHAR(255),
   `rating` INT,
+  `eating_habits` INT,
+  `spent` DECIMAL(15,2),
+  `slepttime` TIME,
+  `woketime` TIME,
   PRIMARY KEY (`id`)
 );
 

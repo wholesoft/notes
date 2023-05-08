@@ -184,6 +184,10 @@ body {
   box-shadow: 0 0 0 0.2rem #ddea1d7b;
 }
 
+.gold {
+  color: #b8860b;
+}
+
 .goldSlider .p-slider-range {
   border: 2px solid #b8860b;
 }

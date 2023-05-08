@@ -254,14 +254,14 @@ export async function getNotes(props) {
     `
       SELECT a.id, a.note, a.title, a.description, a.created, a.updated, a.rating,
       DATE_FORMAT(a.created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, a.user_timezone,
-      a.eating_habits, a.slepttime, a.woketime, a.spent,
+      a.eating_habits, a.slepttime, a.woketime, a.spent, timediff(woketime,slepttime) as snoozed,
       JSON_ARRAYAGG(c.tag) as tags
       FROM Notes a
       LEFT JOIN NoteTags b ON a.id=b.note_id
       LEFT JOIN Tags c ON b.tag_id=c.id
       WHERE user_id=?
       GROUP BY a.id, a.note, a.title, a.description, a.created, a.updated, a.rating, 
-      a.eating_habits, a.slepttime, a.woketime, a.spent, created_usertime, a.user_timezone
+      a.eating_habits, a.slepttime, a.woketime, a.spent, created_usertime, a.user_timezone, snoozed
       ORDER BY a.id DESC
       `,
     [props.user_id]
@@ -335,7 +335,7 @@ export async function getNote(props) {
     `
       SELECT id, note, title, description, created, updated, rating,
       DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone,
-      a.eating_habits, a.slepttime, a.woketime, a.spent
+      a.eating_habits, a.slepttime, a.woketime, a.spent, timediff(woketime,slepttime) as snoozed
       FROM Notes a WHERE user_id=? AND id=?
       `,
     [props.user_id, props.note_id]
