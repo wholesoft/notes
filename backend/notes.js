@@ -44,7 +44,8 @@ export async function addNote(props) {
     validation_okay = false
     return { success: false, message: message }
   }
-
+  console.log("PROPS")
+  console.log(props)
   // Add the Note
   // TODO: turn this into a transaction
   let note_id = 0
@@ -142,6 +143,9 @@ export async function updateNote(props) {
         props.user_id,
       ]
     )
+
+    //console.log(result)
+
     if (result[0].changedRows > 0) {
       console.log(typeof result[0])
       console.log(result[0]["ResultSetHeader"])

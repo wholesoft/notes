@@ -47,8 +47,8 @@ const AddEditNoteForm = (props) => {
   let id = 0
 
   let note = ""
-  let rating = 0
-  let eatingHabits = 0
+  let rating = ""
+  let eatingHabits = ""
   let note_tags = []
   let slepttime = ""
   let woketime = ""
@@ -57,17 +57,17 @@ const AddEditNoteForm = (props) => {
   //console.log(props.data)
   //console.log(props.data.length)
   if (props.data != undefined && props.data.id > 0) {
-    console.log("INIT DATA FROM PROPS")
+    //console.log("INIT DATA FROM PROPS")
     id = props.data.id
     note = props.data.note
     rating = props.data.rating
-    console.log(rating)
+    //console.log(rating)
     if (rating == null) {
-      rating = 0
+      rating = ""
     }
     eatingHabits = props.data.eating_habits
     if (eatingHabits == null) {
-      eatingHabits = 0
+      eatingHabits = ""
     }
     slepttime = props.data.slepttime || ""
     woketime = props.data.woketime || ""
@@ -165,6 +165,7 @@ const AddEditNoteForm = (props) => {
 
   return (
     <>
+      <p>{JSON.stringify(form)}</p>
       <Card
         title={cardTitle}
         className="col-12 md:col-6"

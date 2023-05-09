@@ -2,6 +2,9 @@ import { tabTitle } from "../utils/helperFunctions"
 import { Link } from "react-router-dom"
 import { DisplayDaysNotes } from "../components/DisplayDaysNotes"
 import { HeavenGraph } from "../components/HeavenGraph"
+import { SpentGraph } from "../components/SpentGraph"
+import { NutritionGraph } from "../components/NutritionGraph"
+import { SleepGraph } from "../components/SleepGraph"
 import { EightChart } from "../components/EightChart"
 import { useParams } from "react-router-dom"
 import { Button } from "primereact/button"
@@ -34,6 +37,12 @@ const TodaysNotes = () => {
       </div>
 
       <HeavenGraph dateFilter={dateFilter} />
+
+      <SpentGraph dateFilter={dateFilter} />
+
+      <NutritionGraph dateFilter={dateFilter} />
+
+      <SleepGraph dateFilter={dateFilter} />
 
       <EightChart dateFilter={dateFilter} />
     </>

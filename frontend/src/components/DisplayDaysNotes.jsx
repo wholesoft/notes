@@ -38,7 +38,7 @@ function displaySnoozed(row) {
     }
     let hours = Math.floor(result)
     let minutes = Math.round((result - hours) * 60.0)
-    result = `${hours} h ${minutes} m`
+    result = `${hours}h ${minutes}m`
   }
   return result
 }
@@ -188,14 +188,14 @@ const DisplayDaysNotes = (props) => {
                     <b>{formatTime(row.created)}</b>
                   </div>
                   <div className="text-xs">
-                    <span style={{ width: "80px", display: "inline-block" }}>
-                      Rating: {row.rating}
+                    <span style={{ width: "100px", display: "inline-block" }}>
+                      {row.rating != null ? `Experience: ${row.rating}` : ` `}
                     </span>
 
                     <span
                       style={{
                         color: "purple",
-                        width: "100px",
+                        width: "60px",
                         display: "inline-block",
                       }}
                     >
@@ -204,9 +204,9 @@ const DisplayDaysNotes = (props) => {
 
                     <span
                       className="gold"
-                      style={{ width: "80px", display: "inline-block" }}
+                      style={{ width: "70px", display: "inline-block" }}
                     >
-                      {row.eating_habits != 0 && row.eating_habits != null
+                      {row.eating_habits != null
                         ? `Nutrition: ${row.eating_habits}`
                         : ` `}
                     </span>
@@ -221,7 +221,7 @@ const DisplayDaysNotes = (props) => {
                       {row.spent > 0 ? `$${row.spent}` : ` `}
                     </span>
 
-                    <span className="text-blue-500">
+                    <span className="text-blue-500 pl-3">
                       {row.tags.sort().join(", ")}
                     </span>
                   </div>

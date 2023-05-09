@@ -63,7 +63,7 @@ function local_today() {
   return datestring
 }
 
-const HeavenGraph = (props) => {
+const SpentGraph = (props) => {
   const dataQuery = useNotes()
 
   const rowData = dataQuery.data
@@ -75,11 +75,8 @@ const HeavenGraph = (props) => {
   //console.log(rowData)
 
   // Format query data for use in line chart
-  let ratings = []
-  let n = []
-  let rating_dates = []
-  let zero_line = []
-  let i = 0
+  let spentData = []
+  let chartDates = []
 
   let today = local_today() // new Date().toJSON().slice(0, 10)
   let this_month = new Date().toJSON().slice(0, 7)
@@ -96,15 +93,14 @@ const HeavenGraph = (props) => {
     })
   }
 
+  let total_spent = 0
   myData.map((row) => {
-    if (row.rating != null) {
-      rating_dates.push(row.created_usertime)
-      ratings.push(row.rating)
-      zero_line.push(0)
+    if (row.spent > 0) {
+      total_spent += Number(row.spent)
+      chartDates.push(row.created_usertime)
+      spentData.push(row.spent)
     }
   })
-
-  const average_rating = Math.round(average(ratings))
 
   const options = {
     responsive: true,
@@ -116,40 +112,32 @@ const HeavenGraph = (props) => {
       },
       title: {
         display: true,
-        text: `Experience Chart | Average: ${average_rating}`,
+        text: `Spent Chart | Total: ${total_spent}`,
       },
     },
     scales: {
       y: {
-        min: -100,
-        max: 100,
+        min: 0,
       },
     },
   }
 
-  // ENSURE ZERO LINE IS DRAWN EVEN IF THERE IS JUST ONE DATE
-  if (rating_dates.length == 1) {
-    //console.log(rating_dates[0])
-    rating_dates.push(rating_dates[0])
-    zero_line.push(0)
-    ratings.push(ratings[0])
+  if (spentData.length == 1) {
+    chartDates.push(chartDates[0])
+    spentData.push(spentData[0])
   }
 
-  const chart_data = {
-    labels: rating_dates,
+  const chartData = {
+    labels: chartDates,
     datasets: [
       {
-        data: ratings,
-        borderColor: "rgb(12, 99, 255)",
-      },
-      {
-        data: zero_line,
-        borderColor: "rgb(0, 0, 0)",
+        data: spentData,
+        borderColor: "rgb(0, 128, 0)",
       },
     ],
   }
 
-  return myData.length > 0 ? (
+  return spentData.length > 0 ? (
     <>
       <div
         className="p-3"
@@ -160,7 +148,7 @@ const HeavenGraph = (props) => {
           margin: "auto",
         }}
       >
-        <Line options={options} data={chart_data} />
+        <Line options={options} data={chartData} />
       </div>
     </>
   ) : (
@@ -168,4 +156,4 @@ const HeavenGraph = (props) => {
   )
 }
 
-export { HeavenGraph }
+export { SpentGraph }

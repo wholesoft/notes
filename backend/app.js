@@ -306,11 +306,17 @@ app.post("/add_note", async (req, res) => {
     tags,
   } = req.body
 
-  if (slepttime == "") {
+  if (slepttime === "") {
     slepttime = null
   }
-  if (woketime == "") {
+  if (woketime === "") {
     woketime = null
+  }
+  if (rating === "") {
+    rating = null
+  }
+  if (eatingHabits === "") {
+    eatingHabits = null
   }
 
   const user_id = req.jwt_user_id
@@ -342,12 +348,21 @@ app.post("/edit_note", async (req, res) => {
     tags,
   } = req.body
 
-  if (slepttime == "") {
+  console.log(req.body)
+
+  if (slepttime === "") {
     slepttime = null
   }
-  if (woketime == "") {
+  if (woketime === "") {
     woketime = null
   }
+  if (rating === "") {
+    rating = null
+  }
+  if (eatingHabits === "") {
+    eatingHabits = null
+  }
+
   const user_id = req.jwt_user_id
   const result = await updateNote({
     user_id,
