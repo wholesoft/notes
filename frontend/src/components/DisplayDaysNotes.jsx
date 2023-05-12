@@ -5,6 +5,7 @@ import { Calendar } from "primereact/calendar"
 import { Toast } from "primereact/toast"
 import { Card } from "primereact/card"
 import { useNavigate } from "react-router-dom"
+import { NoteTimer } from "../components/NoteTimer"
 
 function formatTime(date_string) {
   // Should output in this format:
@@ -235,6 +236,7 @@ const DisplayDaysNotes = (props) => {
                       right: "10px",
                     }}
                   >
+                    <NoteTimer note={row} />
                     <Link to={`/edit_note/${row.id}`}>
                       <span className="pi pi-pencil"></span>
                     </Link>

@@ -165,7 +165,6 @@ const AddEditNoteForm = (props) => {
 
   return (
     <>
-      <p>{JSON.stringify(form)}</p>
       <Card
         title={cardTitle}
         className="col-12 md:col-6"

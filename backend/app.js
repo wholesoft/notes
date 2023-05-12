@@ -12,6 +12,7 @@ import {
   deleteNote,
   getNoteDates,
   getAllTags,
+  updateNoteTimer,
 } from "./notes.js"
 
 import { getUserActivity } from "./applog.js"
@@ -374,6 +375,20 @@ app.post("/edit_note", async (req, res) => {
     woketime,
     spent,
     tags,
+  })
+  res.send(result)
+})
+
+app.post("/update_note_timer", async (req, res) => {
+  console.log("/update_note_timer")
+  const { note_id, timer_start, timer_elapsed, timer_status } = req.body
+  const user_id = req.jwt_user_id
+  const result = await updateNoteTimer({
+    user_id,
+    note_id,
+    timer_start,
+    timer_elapsed,
+    timer_status,
   })
   res.send(result)
 })

@@ -8,6 +8,7 @@ import {
   editNote,
   getNoteDates,
   getTags,
+  updateNoteTimer,
 } from "./apiNotes"
 
 /* GROUPS */
@@ -130,6 +131,27 @@ const useEditNote = (toastRef) => {
   return editMutation
 }
 
+const useUpdatetNoteTimer = () => {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const editMutation = useMutation({
+    mutationFn: (data) => updateNoteTimer(data),
+    onMutate: async (props) => {
+      console.log("onMutate updateNoteTimer")
+    },
+    onSuccess: (props) => {
+      //console.log("mutate success")
+      console.log(props.data)
+      queryClient.invalidateQueries(["notes"])
+    },
+    onError: (props) => {
+      console.log(props)
+      console.log("mutate error")
+    },
+  })
+  return editMutation
+}
+
 const useTags = () => {
   const selectQuery = useQuery({
     queryKey: ["tags"],
@@ -150,4 +172,5 @@ export {
   useAddNote,
   useNoteDates,
   useTags,
+  useUpdatetNoteTimer,
 }

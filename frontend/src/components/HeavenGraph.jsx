@@ -149,7 +149,7 @@ const HeavenGraph = (props) => {
     ],
   }
 
-  return myData.length > 0 ? (
+  return ratings.length > 0 ? (
     <>
       <div
         className="p-3"

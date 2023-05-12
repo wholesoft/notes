@@ -189,6 +189,59 @@ export async function updateNote(props) {
   }
 }
 
+export async function updateNoteTimer(props) {
+  // updateNote({ user_id, note_id, note })
+  // Returns { 'success': true/false , 'message': '' }
+  let success = false
+  let message = ""
+  let validation_okay = true
+
+  // VALIDATE INPUT
+  const schema = joi.object({
+    user_id: joi.number().integer().required(),
+    note_id: joi.number().integer().required(),
+    timer_start: joi.date().allow(null),
+    timer_elapsed: joi.number().integer().allow(null),
+    timer_status: joi.string().allow(null),
+  })
+
+  const { error, value } = schema.validate(props)
+  if (error) {
+    console.log(error)
+    console.log("Validation Error.")
+    message = "Vaidation Error (" + error.details[0].message + ")"
+    validation_okay = false
+    return { success: false, message: message }
+  }
+
+  // Update the Note
+  if (validation_okay) {
+    const result = await pool.query(
+      `
+         UPDATE Notes SET updated=CURRENT_TIMESTAMP, timer_start=?, timer_elapsed=?, timer_status=?
+         WHERE id=? AND user_id=?
+         `,
+      [
+        props.timer_start,
+        props.timer_elapsed,
+        props.timer_status,
+        props.note_id,
+        props.user_id,
+      ]
+    )
+  }
+
+  // return the note
+  const res = await getNote({ note_id: props.note_id, user_id: props.user_id })
+
+  return {
+    success: success,
+    message: message,
+    note_id: props.note_id,
+    note: res.data,
+  }
+}
+
 export async function deleteNote(props) {
   // deleteNote({ user_id, note_id })
   // Returns { 'success': true/false , 'message': '' }
@@ -259,13 +312,15 @@ export async function getNotes(props) {
       SELECT a.id, a.note, a.title, a.description, a.created, a.updated, a.rating,
       DATE_FORMAT(a.created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, a.user_timezone,
       a.eating_habits, a.slepttime, a.woketime, a.spent, timediff(woketime,slepttime) as snoozed,
+      timer_start, timer_elapsed, timer_status,
       JSON_ARRAYAGG(c.tag) as tags
       FROM Notes a
       LEFT JOIN NoteTags b ON a.id=b.note_id
       LEFT JOIN Tags c ON b.tag_id=c.id
       WHERE user_id=?
       GROUP BY a.id, a.note, a.title, a.description, a.created, a.updated, a.rating, 
-      a.eating_habits, a.slepttime, a.woketime, a.spent, created_usertime, a.user_timezone, snoozed
+      a.eating_habits, a.slepttime, a.woketime, a.spent, created_usertime, a.user_timezone, snoozed,
+      timer_start, timer_elapsed, timer_status
       ORDER BY a.id DESC
       `,
     [props.user_id]
@@ -339,7 +394,8 @@ export async function getNote(props) {
     `
       SELECT id, note, title, description, created, updated, rating,
       DATE_FORMAT(created_usertime, "%Y-%m-%d %I:%i %p") as created_usertime, user_timezone,
-      a.eating_habits, a.slepttime, a.woketime, a.spent, timediff(woketime,slepttime) as snoozed
+      a.eating_habits, a.slepttime, a.woketime, a.spent, timediff(woketime,slepttime) as snoozed,
+      timer_start, timer_elapsed, timer_status
       FROM Notes a WHERE user_id=? AND id=?
       `,
     [props.user_id, props.note_id]

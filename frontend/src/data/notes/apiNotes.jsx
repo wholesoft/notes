@@ -44,6 +44,16 @@ const editNote = async (data) => {
   return response
 }
 
+const updateNoteTimer = async (data) => {
+  console.log("updateNoteTimer")
+  const url = "/update_note_timer"
+  console.log(data)
+  data = JSON.stringify(data)
+  const response = await axiosAuth.post(url, data)
+  //console.log(response)
+  return response
+}
+
 const getTags = async () => {
   const url = `/tags`
   const response = await axiosAuth.get(url)
@@ -58,4 +68,5 @@ export {
   editNote,
   getNoteDates,
   getTags,
+  updateNoteTimer,
 }
