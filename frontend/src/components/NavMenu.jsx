@@ -40,6 +40,7 @@ const NavMenu = () => {
 
   return (
     <>
+      {/* <p>{JSON.stringify(auth)}</p> */}
       <ul>
         {items.map((item) => {
           return (

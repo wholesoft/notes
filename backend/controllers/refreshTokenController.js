@@ -14,6 +14,7 @@ const pool = mysql
   .promise()
 
 const handleRefreshToken = async (req, res) => {
+  //console.log(req)
   console.log("handleRefreshToken")
   const cookies = req.cookies
   if (!cookies?.jwt) {

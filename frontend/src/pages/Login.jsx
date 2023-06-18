@@ -52,6 +52,7 @@ const Login = () => {
         setPassword("")
         navigate("/unconfirmed")
       } else {
+        localStorage.setItem("atoken", access_token)
         setAuth({ user_id: user_id, email: email, roles, access_token })
         setEmail("")
         setPassword("")

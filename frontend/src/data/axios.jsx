@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 let BASE_URL = "https://notes-api.wholesoft.net"
 
 if (process.env.NODE_ENV == "development") {
-  BASE_URL = "http://localhost:3001"
+  BASE_URL = "http://192.168.8.2:3001"
 }
 
 export default axios.create({
